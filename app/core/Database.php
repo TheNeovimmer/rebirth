@@ -57,7 +57,7 @@ class Database {
 
   public static function count(string $sql, array $params = []): int {
     $row = self::fetch($sql, $params);
-    return $row ? (int) $row['count'] : 0;
+    return $row ? (int) current($row) : 0;
   }
 
   public static function migrate(): void {

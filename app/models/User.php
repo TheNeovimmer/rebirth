@@ -10,7 +10,7 @@ class User {
     return $user;
   }
 
-  public static function register(string $name, string $email, string $password, string $stage): ?array {
+  public static function register(string $name, string $email, string $password): ?array {
     $existing = Database::fetch("SELECT id FROM users WHERE email = ?", [$email]);
     if ($existing) return null;
     $hash = password_hash($password, PASSWORD_BCRYPT);
@@ -20,7 +20,6 @@ class User {
       'email' => $email,
       'password_hash' => $hash,
       'role' => 'member',
-      'stage' => $stage ?: 'Onboarding',
       'initials' => $initials,
     ]);
     $user = Database::fetch("SELECT * FROM users WHERE id = ?", [$id]);
@@ -70,10 +69,6 @@ class User {
 
   public static function countByRole(): array {
     return Database::fetchAll("SELECT role, COUNT(*) as count FROM users GROUP BY role");
-  }
-
-  public static function countByStage(): array {
-    return Database::fetchAll("SELECT stage, COUNT(*) as count FROM users GROUP BY stage");
   }
 
   public static function recent(int $limit = 5): array {

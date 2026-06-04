@@ -1,11 +1,11 @@
 <a href="/therapist/messages" class="btn btn-outline" style="margin-bottom:12px;"><i class="fa-solid fa-arrow-left"></i> All Conversations</a>
 
-<div class="card" style="display:flex;flex-direction:column;height:calc(100dvh - 220px);">
-  <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--color-border);margin-bottom:12px;">
+<div class="card" style="display:flex;flex-direction:column;height:calc(100dvh - 220px);padding-bottom:16px;">
+  <div class="chat-header">
     <?php if (!empty($patient['avatar'])): ?>
-    <img src="/uploads/avatars/<?= htmlspecialchars($patient['avatar']) ?>" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+    <img src="/uploads/avatars/<?= htmlspecialchars($patient['avatar']) ?>" alt="" class="chat-header-avatar" style="object-fit:cover;">
     <?php else: ?>
-    <div style="width:36px;height:36px;border-radius:50%;background:var(--color-accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--color-primary-dark);flex-shrink:0;"><?= htmlspecialchars($patient['initials']) ?></div>
+    <div class="chat-header-avatar"><?= htmlspecialchars($patient['initials']) ?></div>
     <?php endif; ?>
     <strong><?= htmlspecialchars($patient['name']) ?></strong>
   </div>

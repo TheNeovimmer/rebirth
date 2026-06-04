@@ -1,5 +1,5 @@
 <?php if (isset($_GET['success'])): ?>
-<div class="alert" style="background:rgba(76,175,125,0.08);color:var(--color-success);padding:12px 20px;border-radius:var(--radius-sm);margin-bottom:16px;"><?= htmlspecialchars($_GET['success']) ?></div>
+<div class="alert alert-success"><?= htmlspecialchars($_GET['success']) ?></div>
 <?php endif; ?>
 
 <div class="card">
@@ -38,7 +38,10 @@
   <h2>Community Feed</h2>
   <div class="chat-feed">
     <?php if (empty($messages)): ?>
-    <div style="padding:20px;text-align:center;color:var(--color-text-muted);">No messages yet. Be the first to post!</div>
+    <div class="empty-state" style="padding:20px;">
+      <i class="fa-regular fa-comments"></i>
+      <p>No messages yet. Be the first to post!</p>
+    </div>
     <?php else: ?>
     <?php foreach ($messages as $msg): ?>
     <div class="chat-message">
@@ -48,7 +51,7 @@
         <?php else: ?>
         <div class="chat-message-avatar"><?= htmlspecialchars($msg['initials']) ?></div>
         <?php endif; ?>
-        <div>
+        <div style="flex:1;">
           <strong><?= htmlspecialchars($msg['author']) ?></strong>
           <span style="font-size:12px;color:var(--color-text-muted);margin-left:6px;"><?= date('M j, g:i a', strtotime($msg['created_at'])) ?></span>
         </div>
@@ -60,7 +63,37 @@
           <input type="hidden" name="message_id" value="<?= $msg['id'] ?>">
           <button type="submit"><i class="fa-regular fa-heart"></i> <?= $msg['likes'] ?></button>
         </form>
-        <button><i class="fa-regular fa-comment"></i> Reply</button>
+        <button onclick="toggleReplyForm('reply-form-<?= $msg['id'] ?>')"><i class="fa-regular fa-comment"></i> Reply</button>
+      </div>
+
+      <?php if (!empty($msg['comments'])): ?>
+      <div class="comment-thread">
+        <?php foreach ($msg['comments'] as $comment): ?>
+        <div class="comment-item">
+          <?php if (!empty($comment['author_avatar'])): ?>
+          <img src="/uploads/avatars/<?= htmlspecialchars($comment['author_avatar']) ?>" alt="" class="comment-avatar" style="object-fit:cover;">
+          <?php else: ?>
+          <div class="comment-avatar"><?= htmlspecialchars($comment['initials']) ?></div>
+          <?php endif; ?>
+          <div class="comment-body">
+            <div>
+              <strong><?= htmlspecialchars($comment['author']) ?></strong>
+              <span class="comment-time"><?= date('M j, g:i a', strtotime($comment['created_at'])) ?></span>
+            </div>
+            <p><?= htmlspecialchars($comment['text']) ?></p>
+          </div>
+        </div>
+        <?php endforeach; ?>
+      </div>
+      <?php endif; ?>
+
+      <div id="reply-form-<?= $msg['id'] ?>" class="reply-form">
+        <form action="/panel/messages/create" method="POST">
+          <input type="hidden" name="_token" value="<?= $_token ?>">
+          <input type="hidden" name="parent_id" value="<?= $msg['id'] ?>">
+          <input type="text" name="text" class="form-input" placeholder="Write a reply..." required>
+          <button type="submit" class="btn btn-primary" style="padding:8px 14px;font-size:13px;"><i class="fa-regular fa-reply"></i></button>
+        </form>
       </div>
     </div>
     <?php endforeach; ?>
@@ -68,7 +101,14 @@
   </div>
   <form action="/panel/messages/create" method="POST" class="chat-input">
     <input type="hidden" name="_token" value="<?= $_token ?>">
-    <input type="text" name="text" class="form-input" placeholder="Share your thoughts..." style="flex:1;" required>
-    <button type="submit" class="btn btn-primary" style="padding:10px 16px;"><i class="fa-regular fa-paper-plane"></i></button>
+    <input type="text" name="text" class="form-input" placeholder="Share your thoughts..." required>
+    <button type="submit" class="btn btn-primary"><i class="fa-regular fa-paper-plane"></i></button>
   </form>
 </div>
+
+<script>
+function toggleReplyForm(id) {
+  var el = document.getElementById(id);
+  if (el) el.classList.toggle('open');
+}
+</script>

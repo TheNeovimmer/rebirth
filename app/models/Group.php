@@ -9,33 +9,38 @@ class Group {
   }
 
   public static function messages(int $groupId = 0): array {
-    if ($groupId) {
-      return Database::fetchAll(
-        "SELECT m.*, u.name as author, u.initials, u.avatar as author_avatar,
-         (SELECT COUNT(*) FROM message_likes WHERE message_id = m.id) as likes
-         FROM messages m
-         JOIN users u ON u.id = m.user_id
-         WHERE m.group_id = ?
-         ORDER BY m.created_at DESC LIMIT 50",
-        [$groupId]
-      );
-    }
-    return Database::fetchAll(
+    $where = $groupId ? "m.group_id = ? AND m.parent_id IS NULL" : "m.group_id = 0 AND m.parent_id IS NULL";
+    $params = $groupId ? [$groupId] : [];
+    $posts = Database::fetchAll(
       "SELECT m.*, u.name as author, u.initials, u.avatar as author_avatar,
        (SELECT COUNT(*) FROM message_likes WHERE message_id = m.id) as likes
        FROM messages m
        JOIN users u ON u.id = m.user_id
-       WHERE m.group_id = 0
-       ORDER BY m.created_at DESC LIMIT 50"
+       WHERE $where
+       ORDER BY m.created_at DESC LIMIT 50",
+      $params
     );
+    foreach ($posts as &$post) {
+      $post['comments'] = Database::fetchAll(
+        "SELECT m.*, u.name as author, u.initials, u.avatar as author_avatar
+         FROM messages m
+         JOIN users u ON u.id = m.user_id
+         WHERE m.parent_id = ?
+         ORDER BY m.created_at ASC",
+        [$post['id']]
+      );
+    }
+    return $posts;
   }
 
-  public static function createMessage(int $userId, string $text, int $groupId = 0): int {
-    return Database::insert('messages', [
+  public static function createMessage(int $userId, string $text, int $groupId = 0, ?int $parentId = null): int {
+    $data = [
       'user_id' => $userId,
       'group_id' => $groupId,
       'text' => $text,
-    ]);
+    ];
+    if ($parentId) $data['parent_id'] = $parentId;
+    return Database::insert('messages', $data);
   }
 
   public static function deleteMessage(int $id): int {

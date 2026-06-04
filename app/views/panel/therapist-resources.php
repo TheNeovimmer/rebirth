@@ -1,17 +1,18 @@
 <?php if (isset($_GET['success'])): ?>
-<div class="alert" style="background:rgba(76,175,125,0.08);color:var(--color-success);padding:12px 20px;border-radius:var(--radius-sm);margin-bottom:16px;"><?= htmlspecialchars($_GET['success']) ?></div>
+<div class="alert alert-success"><?= htmlspecialchars($_GET['success']) ?></div>
 <?php endif; ?>
 
-<div class="card">
-  <div style="display:flex;justify-content:space-between;align-items:center;">
-    <h2>My Resources</h2>
-    <button class="btn btn-primary" onclick="document.getElementById('uploadModal').style.display='flex'"><i class="fa-solid fa-upload"></i> Upload</button>
-  </div>
+<div class="section-header">
+  <h2>My Resources</h2>
+  <button class="btn btn-primary" onclick="document.getElementById('uploadModal').style.display='flex'"><i class="fa-solid fa-upload"></i> Upload</button>
 </div>
 
 <?php if (empty($resources)): ?>
-<div class="card" style="text-align:center;padding:40px;">
-  <p style="color:var(--color-text-muted);">No resources uploaded yet.</p>
+<div class="card">
+  <div class="empty-state">
+    <i class="fa-regular fa-folder-open"></i>
+    <p>No resources uploaded yet.</p>
+  </div>
 </div>
 <?php else: ?>
 <div class="resources-grid">
@@ -29,7 +30,7 @@
       <form action="/therapist/resources/delete" method="POST" style="display:inline;" onsubmit="return confirm('Delete this resource?')">
         <input type="hidden" name="_token" value="<?= $_token ?>">
         <input type="hidden" name="id" value="<?= $res['id'] ?>">
-        <button type="submit" class="btn btn-outline" style="padding:4px 10px;font-size:12px;color:var(--color-danger);"><i class="fa-solid fa-trash"></i></button>
+        <button type="submit" class="btn btn-outline btn-xs" style="color:var(--color-danger);"><i class="fa-solid fa-trash"></i></button>
       </form>
     </div>
   </div>
@@ -37,7 +38,7 @@
 </div>
 <?php endif; ?>
 
-<div class="modal-overlay" id="uploadModal" style="display:none;">
+<div class="modal-overlay" id="uploadModal">
   <div class="modal">
     <form action="/therapist/resources/create" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="_token" value="<?= $_token ?>">

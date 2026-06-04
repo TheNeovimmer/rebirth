@@ -1,84 +1,90 @@
-<div class="stats-row">
+<div class="therapist-stats">
   <div class="stat-card">
-    <div class="stat-icon green"><i class="fa-solid fa-heart-pulse"></i></div>
-    <div class="stat-value"><?= $patientCount ?></div>
-    <div class="stat-label">My Patients</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon blue"><i class="fa-regular fa-calendar"></i></div>
-    <div class="stat-value"><?= count($upcomingAppointments) ?></div>
-    <div class="stat-label">Upcoming Sessions</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon orange"><i class="fa-regular fa-clock"></i></div>
-    <div class="stat-value"><?= $todayAppointments ?></div>
-    <div class="stat-label">Today's Sessions</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon purple"><i class="fa-regular fa-comments"></i></div>
-    <div class="stat-value"><?= $recentActivity ?></div>
-    <div class="stat-label">Recent Activity</div>
-  </div>
-</div>
-
-<div class="card">
-  <h2>My Patients</h2>
-  <?php if (empty($patients)): ?>
-  <div class="overview-row"><span style="color:var(--color-text-muted);">No patients assigned yet</span></div>
-  <?php else: ?>
-  <?php
-  $stageColors = ['Onboarding'=>'orange', 'Active'=>'green', 'Aftercare'=>'blue', 'Relapse'=>'red'];
-  ?>
-  <?php foreach ($patients as $p): ?>
-  <div class="appointment-item">
+    <div class="stat-icon green"><i class="fa-regular fa-users"></i></div>
     <div>
-      <strong><?= htmlspecialchars($p['name']) ?></strong>
-      <span style="font-size:13px;color:var(--color-text-muted);"><?= htmlspecialchars($p['email']) ?></span>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span class="badge badge-<?= $stageColors[$p['stage']] ?? 'gray' ?>"><?= htmlspecialchars($p['stage']) ?></span>
-      <a href="/therapist/patient/<?= $p['id'] ?>" class="btn btn-outline" style="padding:6px 14px;font-size:13px;">View</a>
+      <div class="stat-value"><?= $patientCount ?></div>
+      <div class="stat-label">Patients</div>
     </div>
   </div>
-  <?php endforeach; ?>
-  <a href="/therapist/patients" class="btn btn-outline" style="margin-top:12px;width:100%;justify-content:center;">View All Patients</a>
-  <?php endif; ?>
-</div>
-
-<div class="card">
-  <h2>Upcoming Sessions</h2>
-  <?php if (empty($upcomingAppointments)): ?>
-  <div class="overview-row"><span style="color:var(--color-text-muted);">No upcoming sessions</span></div>
-  <?php else: ?>
-  <?php foreach ($upcomingAppointments as $apt): ?>
-  <div class="appointment-item">
-    <div><strong><?= date('M j, g:i A', strtotime($apt['date_time'])) ?></strong><span><?= htmlspecialchars($apt['patient_name']) ?> — <?= htmlspecialchars($apt['title']) ?></span></div>
-    <span class="badge badge-<?= $apt['status'] === 'confirmed' ? 'green' : 'orange' ?>"><?= htmlspecialchars(ucfirst($apt['status'])) ?></span>
+  <div class="stat-card">
+    <div class="stat-icon blue"><i class="fa-regular fa-comment-dots"></i></div>
+    <div>
+      <div class="stat-value"><?= $unreadCount ?></div>
+      <div class="stat-label">Unread Messages</div>
+    </div>
   </div>
-  <?php endforeach; ?>
-  <?php endif; ?>
-  <a href="/panel/appointments" class="btn btn-outline" style="margin-top:12px;width:100%;justify-content:center;">View Full Schedule</a>
+  <div class="stat-card">
+    <div class="stat-icon red"><i class="fa-regular fa-circle-exclamation"></i></div>
+    <div>
+      <div class="stat-value" style="color:var(--color-danger);"><?= $activeSos ?></div>
+      <div class="stat-label">Active SOS</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon orange"><i class="fa-regular fa-calendar-check"></i></div>
+    <div>
+      <div class="stat-value"><?= $recentActivity ?></div>
+      <div class="stat-label">Check-ins Today</div>
+    </div>
+  </div>
 </div>
 
-<div class="quick-actions">
-  <a href="/therapist/patients" class="btn" style="display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-solid fa-heart-pulse"></i> My Patients</a>
-  <a href="/therapist/sos" class="btn" style="display:flex;align-items:center;gap:8px;justify-content:center;border-color:var(--color-danger);color:var(--color-danger);"><i class="fa-solid fa-triangle-exclamation"></i> SOS Alerts</a>
-  <a href="/panel/appointments" class="btn" style="display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-regular fa-calendar"></i> Schedule</a>
-  <a href="/panel/community" class="btn" style="display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-regular fa-comments"></i> Community</a>
-  <a href="/therapist/resources" class="btn" style="display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-solid fa-folder-open"></i> Resources</a>
-  <a href="/therapist/availability" class="btn" style="display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-solid fa-clock"></i> Availability</a>
-</div>
-
-<?php if (!empty($recentCheckins)): ?>
-<div class="card">
-  <h2>Recent Check-ins</h2>
-  <?php foreach ($recentCheckins as $c): ?>
-  <div class="overview-row">
-    <span><strong><?= htmlspecialchars($c['patient_name']) ?></strong> — <?= ucfirst($c['mood']) ?> on <?= date('M j', strtotime($c['check_date'])) ?></span>
-    <?php if ($c['craving_level'] !== null): ?>
-    <span class="badge badge-orange">Craving: <?= $c['craving_level'] ?>/100</span>
+<div class="grid-2">
+  <div class="card">
+    <div class="section-header">
+      <h2>My Patients</h2>
+      <a href="/therapist/patients" class="btn btn-ghost btn-xs">View all</a>
+    </div>
+    <?php if (!empty($patients)): ?>
+      <?php foreach (array_slice($patients, 0, 5) as $patient): ?>
+      <div class="patient-list-item">
+        <div class="patient-list-item-info">
+          <strong><?= htmlspecialchars($patient['name'] ?? '') ?></strong>
+          <span><?= htmlspecialchars($patient['email'] ?? '') ?></span>
+        </div>
+        <a href="/therapist/patient/<?= $patient['id'] ?>" class="btn btn-outline btn-sm">View</a>
+      </div>
+      <?php endforeach; ?>
+      <a href="/therapist/patients" class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px;">View All Patients</a>
+    <?php else: ?>
+    <div class="empty-state">
+      <i class="fa-regular fa-user"></i>
+      <p>No patients assigned yet.</p>
+    </div>
     <?php endif; ?>
   </div>
-  <?php endforeach; ?>
+
+  <div class="card">
+    <div class="section-header">
+      <h2>Recent Check-ins</h2>
+    </div>
+    <?php if (!empty($recentCheckins)): ?>
+      <?php foreach ($recentCheckins as $checkin): ?>
+      <div class="data-row">
+        <div class="data-row-body">
+          <strong><?= htmlspecialchars($checkin['patient_name'] ?? '') ?></strong>
+          <span><?= date('M j, Y', strtotime($checkin['date'] ?? 'now')) ?></span>
+        </div>
+        <span class="badge badge-<?= $checkin['mood'] === 'struggling' || $checkin['mood'] === 'difficult' ? 'red' : ($checkin['mood'] === 'neutral' ? 'orange' : 'green') ?>">
+          <?= ucfirst(htmlspecialchars($checkin['mood'] ?? '')) ?>
+        </span>
+      </div>
+      <?php endforeach; ?>
+    <?php else: ?>
+    <div class="empty-state">
+      <i class="fa-regular fa-calendar"></i>
+      <p>No recent check-ins.</p>
+    </div>
+    <?php endif; ?>
+  </div>
 </div>
-<?php endif; ?>
+
+<div class="card" style="padding-bottom:16px;">
+  <h2>Quick Actions</h2>
+  <div class="quick-actions">
+    <a href="/therapist/patients" class="btn"><i class="fa-regular fa-user"></i> My Patients</a>
+    <a href="/therapist/messages" class="btn"><i class="fa-regular fa-comment-dots"></i> Messages</a>
+    <a href="/therapist/sos" class="btn danger"><i class="fa-regular fa-circle-exclamation"></i> SOS</a>
+    <a href="/therapist/resources" class="btn"><i class="fa-regular fa-bookmark"></i> Resources</a>
+  </div>
+</div>

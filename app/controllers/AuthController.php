@@ -42,7 +42,6 @@ class AuthController extends Controller {
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
-    $stage = trim($_POST['stage'] ?? 'Onboarding');
 
     if (!$name || !$email || !$password) {
       $this->redirect('/signup?error=All fields are required');
@@ -51,7 +50,7 @@ class AuthController extends Controller {
       $this->redirect('/signup?error=Password must be at least 6 characters');
     }
 
-    $user = User::register($name, $email, $password, $stage);
+    $user = User::register($name, $email, $password);
     if (!$user) {
       $this->redirect('/signup?error=Email already registered');
     }

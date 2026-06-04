@@ -1,25 +1,25 @@
 <?php if (isset($_GET['success'])): ?>
-<div class="alert" style="background:rgba(76,175,125,0.08);color:var(--color-success);padding:12px 20px;border-radius:var(--radius-sm);margin-bottom:16px;"><?= htmlspecialchars($_GET['success']) ?></div>
+<div class="alert alert-success"><?= htmlspecialchars($_GET['success']) ?></div>
 <?php endif; ?>
 
 <?php if (!$therapistId): ?>
-<div class="card" style="text-align:center;padding:40px;">
-  <i class="fa-solid fa-user-md" style="font-size:48px;color:var(--color-text-muted);margin-bottom:16px;"></i>
-  <p>You don't have a therapist assigned yet. An admin will assign one soon.</p>
+<div class="card">
+  <div class="empty-state">
+    <i class="fa-solid fa-user-md"></i>
+    <p>You don't have a therapist assigned yet. An admin will assign one soon.</p>
+  </div>
 </div>
 <?php elseif (!$conversation): ?>
-<div class="card" style="text-align:center;padding:40px;">
-  <p>Conversation ready. Start sending messages below.</p>
+<div class="card" style="text-align:center;padding:32px;">
+  <p style="color:var(--color-text-muted);">Conversation ready. Start sending messages below.</p>
 </div>
 <?php else: ?>
-<div class="card" style="display:flex;flex-direction:column;height:calc(100dvh - 220px);">
-  <div class="chat-header" style="display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--color-border);margin-bottom:12px;">
+<div class="card" style="display:flex;flex-direction:column;height:calc(100dvh - 220px);padding-bottom:16px;">
+  <div class="chat-header">
     <?php if (!empty($conversation['therapist_avatar'])): ?>
-    <img src="/uploads/avatars/<?= htmlspecialchars($conversation['therapist_avatar']) ?>" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+    <img src="/uploads/avatars/<?= htmlspecialchars($conversation['therapist_avatar']) ?>" alt="" class="chat-header-avatar" style="object-fit:cover;">
     <?php else: ?>
-    <div style="width:36px;height:36px;border-radius:50%;background:var(--color-accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--color-primary-dark);flex-shrink:0;">
-      <?= htmlspecialchars($conversation['therapist_initials'] ?? 'TH') ?>
-    </div>
+    <div class="chat-header-avatar"><?= htmlspecialchars($conversation['therapist_initials'] ?? 'TH') ?></div>
     <?php endif; ?>
     <div>
       <strong><?= htmlspecialchars($conversation['therapist_name'] ?? 'Your Therapist') ?></strong>

@@ -22,6 +22,13 @@ class JournalEntry {
     ]);
   }
 
+  public static function update(int $id, int $userId, string $content, string $mood): int {
+    return Database::update('journal_entries', $id, [
+      'content' => $content,
+      'mood' => $mood,
+    ]);
+  }
+
   public static function delete(int $id, int $userId): int {
     $stmt = Database::query(
       "DELETE FROM journal_entries WHERE id = ? AND user_id = ?",

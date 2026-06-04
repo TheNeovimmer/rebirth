@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="app-layout">
@@ -22,10 +22,7 @@
         <div class="app-sidebar-section">Admin</div>
         <a href="/admin/dashboard" class="app-sidebar-link <?= $page === 'Dashboard' ? 'active' : '' ?>"><i class="fa-solid fa-chart-pie"></i>Dashboard</a>
         <a href="/admin/users" class="app-sidebar-link <?= $page === 'Users' ? 'active' : '' ?>"><i class="fa-solid fa-users"></i>Users</a>
-        <a href="/admin/appointments" class="app-sidebar-link <?= $page === 'Appointments' ? 'active' : '' ?>"><i class="fa-regular fa-calendar"></i>Appointments</a>
-        <a href="/admin/resources" class="app-sidebar-link <?= $page === 'Resources' ? 'active' : '' ?>"><i class="fa-regular fa-file-lines"></i>Resources</a>
         <a href="/admin/moderation" class="app-sidebar-link <?= $page === 'Moderation' ? 'active' : '' ?>"><i class="fa-solid fa-shield"></i>Moderation</a>
-        <a href="/admin/analytics" class="app-sidebar-link <?= $page === 'Analytics' ? 'active' : '' ?>"><i class="fa-solid fa-chart-line"></i>Analytics</a>
         <div class="app-sidebar-section">Account</div>
         <a href="/admin/settings" class="app-sidebar-link <?= $page === 'Settings' ? 'active' : '' ?>"><i class="fa-solid fa-gear"></i>Settings</a>
         <a href="/logout" class="app-sidebar-link" style="color:var(--color-danger);"><i class="fa-solid fa-right-from-bracket"></i>Sign Out</a>
