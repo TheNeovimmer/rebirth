@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account - Rebirth</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo"><img src="logo.png" alt="Rebirth"></div>
+    <h1 class="auth-title">Begin Your Journey</h1>
+    <p class="auth-subtitle">Create your profile in a few steps</p>
+
+    <div class="auth-steps">
+      <div class="auth-step active"></div>
+      <div class="auth-step"></div>
+      <div class="auth-step"></div>
+    </div>
+
+    <form onsubmit="event.preventDefault(); window.location.href='panel/dashboard.html';">
+      <div class="form-group">
+        <label class="form-label" for="name">Full Name</label>
+        <input class="form-input" id="name" type="text" placeholder="Your name" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="signup-email">Email</label>
+        <input class="form-input" id="signup-email" type="email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="signup-password">Password</label>
+        <input class="form-input" id="signup-password" type="password" placeholder="Create a password" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="signup-confirm">Confirm Password</label>
+        <input class="form-input" id="signup-confirm" type="password" placeholder="Confirm your password" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="stage">Recovery Stage</label>
+        <select class="form-select" id="stage">
+          <option value="">Select your stage</option>
+          <option>Just starting out</option>
+          <option>In early recovery</option>
+          <option>In sustained recovery</option>
+          <option>Supporting a loved one</option>
+          <option>Healthcare professional</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+    </form>
+    <div class="auth-footer">Already have an account? <a href="login.html">Sign in</a></div>
+  </div>
+</body>
+</html>

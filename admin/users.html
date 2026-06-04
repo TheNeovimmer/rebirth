@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users Management - Rebirth Admin</title>
+  <link rel="icon" href="../logo.png">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="app-sidebar-header">
+        <img src="../logo.png" alt="R"><span>Rebirth Admin</span>
+      </div>
+      <nav class="app-sidebar-nav">
+        <div class="app-sidebar-section">Admin</div>
+        <a href="dashboard.html" class="app-sidebar-link"><i class="fa-regular fa-chart-pie"></i>Dashboard</a>
+        <a href="users.html" class="app-sidebar-link active"><i class="fa-solid fa-users"></i>Users</a>
+        <a href="appointments.html" class="app-sidebar-link"><i class="fa-regular fa-calendar"></i>Appointments</a>
+        <a href="resources.html" class="app-sidebar-link"><i class="fa-regular fa-file-lines"></i>Resources</a>
+        <a href="moderation.html" class="app-sidebar-link"><i class="fa-regular fa-shield"></i>Moderation</a>
+        <a href="analytics.html" class="app-sidebar-link"><i class="fa-regular fa-chart-line"></i>Analytics</a>
+        <div class="app-sidebar-section">Account</div>
+        <a href="../panel/settings.html" class="app-sidebar-link"><i class="fa-regular fa-gear"></i>Settings</a>
+      </nav>
+      <div class="app-sidebar-footer">
+        <div class="app-sidebar-user">
+          <div class="app-sidebar-user-avatar">AU</div>
+          <div><div class="app-sidebar-user-name">Admin User</div><div class="app-sidebar-user-role">Administrator</div></div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="app-main" style="flex:1;display:flex;flex-direction:column;min-width:0;">
+      <header class="app-topbar">
+        <div class="app-topbar-left">
+          <span class="app-topbar-title">Users Management</span>
+        </div>
+        <div class="app-topbar-right">
+          <button class="app-topbar-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+          <div class="app-topbar-avatar">AU</div>
+        </div>
+      </header>
+
+      <div class="app-content">
+        <div class="filter-bar">
+          <input class="form-input" placeholder="Search users..." style="max-width:240px;">
+          <select class="form-select" style="width:auto;"><option>All Stages</option><option>Just starting</option><option>Early recovery</option><option>Sustained recovery</option></select>
+          <select class="form-select" style="width:auto;"><option>All Status</option><option>Active</option><option>Inactive</option></select>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>All Users</h3></div>
+          <div class="card-body" style="padding:0;">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Stage</th>
+                    <th>Status</th>
+                    <th>Sessions</th>
+                    <th>Joined</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><div class="table-user"><div class="table-user-avatar" style="background:rgba(180,191,115,0.2);color:#005840;">JD</div><div><div class="table-user-name">Jamie Doe</div><div class="table-user-email">jamie@example.com</div></div></div></td>
+                    <td>Early recovery</td>
+                    <td><span class="badge badge-green">Active</span></td>
+                    <td>24</td>
+                    <td>Mar 2026</td>
+                    <td><button class="btn btn-sm btn-ghost"><i class="fa-regular fa-eye"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td><div class="table-user"><div class="table-user-avatar" style="background:rgba(0,122,255,0.1);color:#007aff;">MS</div><div><div class="table-user-name">Marcus Smith</div><div class="table-user-email">marcus@example.com</div></div></div></td>
+                    <td>Sustained recovery</td>
+                    <td><span class="badge badge-green">Active</span></td>
+                    <td>67</td>
+                    <td>Jan 2026</td>
+                    <td><button class="btn btn-sm btn-ghost"><i class="fa-regular fa-eye"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td><div class="table-user"><div class="table-user-avatar" style="background:rgba(232,168,56,0.1);color:#e8a838;">AL</div><div><div class="table-user-name">Anna Lopez</div><div class="table-user-email">anna@example.com</div></div></div></td>
+                    <td>Just starting</td>
+                    <td><span class="badge badge-orange">At Risk</span></td>
+                    <td>3</td>
+                    <td>May 2026</td>
+                    <td><button class="btn btn-sm btn-ghost"><i class="fa-regular fa-eye"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td><div class="table-user"><div class="table-user-avatar" style="background:rgba(76,175,125,0.1);color:#4caf7d;">RK</div><div><div class="table-user-name">Raj Kumar</div><div class="table-user-email">raj@example.com</div></div></div></td>
+                    <td>Early recovery</td>
+                    <td><span class="badge badge-green">Active</span></td>
+                    <td>15</td>
+                    <td>Apr 2026</td>
+                    <td><button class="btn btn-sm btn-ghost"><i class="fa-regular fa-eye"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td><div class="table-user"><div class="table-user-avatar" style="background:rgba(209,69,59,0.1);color:#d1453b;">SW</div><div><div class="table-user-name">Sarah Wilson</div><div class="table-user-email">sarah@example.com</div></div></div></td>
+                    <td>Just starting</td>
+                    <td><span class="badge badge-gray">Inactive</span></td>
+                    <td>1</td>
+                    <td>Jun 2026</td>
+                    <td><button class="btn btn-sm btn-ghost"><i class="fa-regular fa-eye"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td><div class="table-user"><div class="table-user-avatar" style="background:rgba(180,191,115,0.2);color:#005840;">DC</div><div><div class="table-user-name">David Chen</div><div class="table-user-email">david@example.com</div></div></div></td>
+                    <td>Sustained recovery</td>
+                    <td><span class="badge badge-green">Active</span></td>
+                    <td>42</td>
+                    <td>Feb 2026</td>
+                    <td><button class="btn btn-sm btn-ghost"><i class="fa-regular fa-eye"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

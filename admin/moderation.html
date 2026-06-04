@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moderation - Rebirth</title>
+  <link rel="icon" href="../logo.png">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="app-sidebar-header">
+        <img src="../logo.png" alt="Rebirth">
+        <span>Rebirth</span>
+      </div>
+      <nav class="app-sidebar-nav">
+        <div class="app-sidebar-section">Admin</div>
+        <a href="dashboard.html" class="app-sidebar-link"><i class="fa-regular fa-chart-pie"></i>Dashboard</a>
+        <a href="users.html" class="app-sidebar-link"><i class="fa-solid fa-users"></i>Users</a>
+        <a href="appointments.html" class="app-sidebar-link"><i class="fa-regular fa-calendar"></i>Appointments</a>
+        <a href="resources.html" class="app-sidebar-link"><i class="fa-regular fa-file-lines"></i>Resources</a>
+        <a href="moderation.html" class="app-sidebar-link active"><i class="fa-regular fa-shield"></i>Moderation</a>
+        <a href="analytics.html" class="app-sidebar-link"><i class="fa-regular fa-chart-line"></i>Analytics</a>
+        <div class="app-sidebar-section">Account</div>
+        <a href="../panel/settings.html" class="app-sidebar-link"><i class="fa-regular fa-gear"></i>Settings</a>
+      </nav>
+      <div class="app-sidebar-footer">
+        <div class="app-sidebar-user">
+          <div class="app-sidebar-user-avatar">AU</div>
+          <div>
+            <div class="app-sidebar-user-name">Admin User</div>
+            <div class="app-sidebar-user-role">Administrator</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <header class="app-topbar">
+      <div class="app-topbar-left">
+        <h1 class="app-topbar-title">Moderation</h1>
+      </div>
+      <div class="app-topbar-right">
+        <button class="app-topbar-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+        <div class="app-topbar-avatar">AU</div>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-card-icon red"><i class="fa-regular fa-flag"></i></div>
+          <div>
+            <div class="stat-card-value">5</div>
+            <div class="stat-card-label">Flagged Posts</div>
+            <div class="stat-card-change up">+2 today</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon orange"><i class="fa-regular fa-circle-exclamation"></i></div>
+          <div>
+            <div class="stat-card-value">12</div>
+            <div class="stat-card-label">Pending Review</div>
+            <div class="stat-card-change up">&nbsp;</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon blue"><i class="fa-regular fa-check-circle"></i></div>
+          <div>
+            <div class="stat-card-value">98%</div>
+            <div class="stat-card-label">Resolved Rate</div>
+            <div class="stat-card-change up">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Flagged Content</h3>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Content</th>
+                  <th>Author</th>
+                  <th>Type</th>
+                  <th>Reason</th>
+                  <th>Flagged</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Need help with anxiety...</td>
+                  <td>Alex Rivera</td>
+                  <td>Post</td>
+                  <td>Inappropriate language</td>
+                  <td>Jun 4, 2026</td>
+                  <td><span class="badge badge-orange">Pending</span></td>
+                  <td>
+                    <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Great article thanks for...</td>
+                  <td>Sarah Chen</td>
+                  <td>Comment</td>
+                  <td>Spam</td>
+                  <td>Jun 4, 2026</td>
+                  <td><span class="badge badge-orange">Pending</span></td>
+                  <td>
+                    <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>You don't know what you're...</td>
+                  <td>Marcus Webb</td>
+                  <td>Post</td>
+                  <td>Harassment</td>
+                  <td>Jun 3, 2026</td>
+                  <td><span class="badge badge-blue">Reviewed</span></td>
+                  <td>
+                    <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Check out my new websi...</td>
+                  <td>Priya Kapoor</td>
+                  <td>Comment</td>
+                  <td>Off-topic</td>
+                  <td>Jun 2, 2026</td>
+                  <td><span class="badge badge-green">Resolved</span></td>
+                  <td>
+                    <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="btn btn-ghost btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Recent Reports</h3>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--color-border);">
+              <div>
+                <div style="font-weight:500;">Inappropriate profile picture</div>
+                <div style="font-size:13px;color:var(--color-text-muted);">Reported by: Moderator Jane</div>
+              </div>
+              <div style="font-size:13px;color:var(--color-text-light);">Jun 4, 2026</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--color-border);">
+              <div>
+                <div style="font-weight:500;">Suspicious link in bio</div>
+                <div style="font-size:13px;color:var(--color-text-muted);">Reported by: User Mike T.</div>
+              </div>
+              <div style="font-size:13px;color:var(--color-text-light);">Jun 3, 2026</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div style="font-weight:500;">Repeated spam comments</div>
+                <div style="font-size:13px;color:var(--color-text-muted);">Reported by: Community Bot</div>
+              </div>
+              <div style="font-size:13px;color:var(--color-text-light);">Jun 3, 2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelector('.app-sidebar-toggle')?.addEventListener('click', () => {
+      document.querySelector('.app-sidebar').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

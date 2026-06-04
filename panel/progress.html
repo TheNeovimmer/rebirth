@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress - Rebirth</title>
+  <link rel="icon" href="../logo.png">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+
+    <aside class="app-sidebar">
+      <div class="app-sidebar-header">
+        <img src="../logo.png" alt="R">
+        <span>Rebirth</span>
+      </div>
+      <nav class="app-sidebar-nav">
+        <div class="app-sidebar-section">Main</div>
+        <a href="dashboard.html" class="app-sidebar-link"><i class="fa-regular fa-house"></i>Dashboard</a>
+        <a href="checkin.html" class="app-sidebar-link"><i class="fa-regular fa-face-smile"></i>Daily Check-in</a>
+        <a href="journal.html" class="app-sidebar-link"><i class="fa-regular fa-book"></i>Journal</a>
+        <a href="appointments.html" class="app-sidebar-link"><i class="fa-regular fa-calendar"></i>Appointments</a>
+        <a href="community.html" class="app-sidebar-link"><i class="fa-regular fa-comments"></i>Community</a>
+        <a href="resources.html" class="app-sidebar-link"><i class="fa-regular fa-file-lines"></i>Resources</a>
+        <div class="app-sidebar-section">Account</div>
+        <a href="progress.html" class="app-sidebar-link active"><i class="fa-regular fa-chart-line"></i>Progress</a>
+        <a href="settings.html" class="app-sidebar-link"><i class="fa-regular fa-gear"></i>Settings</a>
+      </nav>
+      <div class="app-sidebar-footer">
+        <div class="app-sidebar-user">
+          <div class="app-sidebar-user-avatar">JD</div>
+          <div>
+            <div class="app-sidebar-user-name">Jamie Doe</div>
+            <div class="app-sidebar-user-role">Member</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="app-main" style="flex:1;display:flex;flex-direction:column;min-width:0;">
+
+      <header class="app-topbar">
+        <div class="app-topbar-left">
+          <span class="app-topbar-title">My Progress</span>
+        </div>
+        <div class="app-topbar-right">
+          <button class="app-topbar-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+          <div class="app-topbar-avatar">JD</div>
+        </div>
+      </header>
+
+      <div class="app-content">
+
+        <div class="progress-stats">
+          <div class="progress-stat">
+            <div class="progress-stat-value">24</div>
+            <div class="progress-stat-label">Day Streak</div>
+          </div>
+          <div class="progress-stat">
+            <div class="progress-stat-value">12</div>
+            <div class="progress-stat-label">Milestones</div>
+          </div>
+          <div class="progress-stat">
+            <div class="progress-stat-value">82%</div>
+            <div class="progress-stat-label">Avg. Mood</div>
+          </div>
+          <div class="progress-stat">
+            <div class="progress-stat-value">67</div>
+            <div class="progress-stat-label">Check-ins</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Mood Trends</h2>
+          <div class="chart-box">
+            <div class="chart-box-inline">
+              <div class="chart-bar" style="height:45%"></div>
+              <div class="chart-bar" style="height:70%"></div>
+              <div class="chart-bar" style="height:55%"></div>
+              <div class="chart-bar" style="height:85%"></div>
+              <div class="chart-bar" style="height:60%"></div>
+              <div class="chart-bar" style="height:90%"></div>
+              <div class="chart-bar" style="height:75%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Milestones</h2>
+          <div class="milestone-item">
+            <div class="milestone-icon done"><i class="fa-regular fa-check"></i></div>
+            <div class="milestone-info">First week completed</div>
+          </div>
+          <div class="milestone-item">
+            <div class="milestone-icon done"><i class="fa-regular fa-check"></i></div>
+            <div class="milestone-info">30 days sober</div>
+          </div>
+          <div class="milestone-item">
+            <div class="milestone-icon done"><i class="fa-regular fa-check"></i></div>
+            <div class="milestone-info">Completed first group session</div>
+          </div>
+          <div class="milestone-item">
+            <div class="milestone-icon locked"><i class="fa-regular fa-lock"></i></div>
+            <div class="milestone-info">90 days sober</div>
+          </div>
+          <div class="milestone-item">
+            <div class="milestone-icon locked"><i class="fa-regular fa-lock"></i></div>
+            <div class="milestone-info">6 months in recovery</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>This Week</h2>
+          <div class="milestone-item">
+            <div class="milestone-info">Mon</div>
+            <div class="progress-bar"><div class="progress-bar-fill" style="width:65%"></div></div>
+            <span>65%</span>
+          </div>
+          <div class="milestone-item">
+            <div class="milestone-info">Tue</div>
+            <div class="progress-bar"><div class="progress-bar-fill" style="width:80%"></div></div>
+            <span>80%</span>
+          </div>
+          <div class="milestone-item">
+            <div class="milestone-info">Wed</div>
+            <div class="progress-bar"><div class="progress-bar-fill" style="width:45%"></div></div>
+            <span>45%</span>
+          </div>
+          <div class="milestone-item">
+            <div class="milestone-info">Thu</div>
+            <div class="progress-bar"><div class="progress-bar-fill" style="width:90%"></div></div>
+            <span>90%</span>
+          </div>
+          <div class="milestone-item">
+            <div class="milestone-info">Fri</div>
+            <div class="progress-bar"><div class="progress-bar-fill" style="width:70%"></div></div>
+            <span>70%</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <nav class="app-tabs">
+      <a href="dashboard.html" class="app-tab"><i class="fa-regular fa-house"></i><span>Home</span></a>
+      <a href="checkin.html" class="app-tab"><i class="fa-regular fa-face-smile"></i><span>Check-in</span></a>
+      <a href="community.html" class="app-tab"><i class="fa-regular fa-comments"></i><span>Community</span></a>
+      <a href="progress.html" class="app-tab active"><i class="fa-regular fa-chart-line"></i><span>Progress</span></a>
+      <a href="../panel/journal.html" class="app-tab"><i class="fa-regular fa-bars"></i><span>More</span></a>
+    </nav>
+
+  </div>
+</body>
+</html>

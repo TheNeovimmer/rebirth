@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Rebirth</title>
+  <link rel="icon" href="../logo.png">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+
+    <aside class="app-sidebar">
+      <div class="app-sidebar-header">
+        <img src="../logo.png" alt="R">
+        <span>Rebirth</span>
+      </div>
+      <nav class="app-sidebar-nav">
+        <div class="app-sidebar-section">Main</div>
+        <a href="dashboard.html" class="app-sidebar-link"><i class="fa-regular fa-house"></i>Dashboard</a>
+        <a href="checkin.html" class="app-sidebar-link"><i class="fa-regular fa-face-smile"></i>Daily Check-in</a>
+        <a href="journal.html" class="app-sidebar-link"><i class="fa-regular fa-book"></i>Journal</a>
+        <a href="appointments.html" class="app-sidebar-link"><i class="fa-regular fa-calendar"></i>Appointments</a>
+        <a href="community.html" class="app-sidebar-link"><i class="fa-regular fa-comments"></i>Community</a>
+        <a href="resources.html" class="app-sidebar-link"><i class="fa-regular fa-file-lines"></i>Resources</a>
+        <div class="app-sidebar-section">Account</div>
+        <a href="progress.html" class="app-sidebar-link"><i class="fa-regular fa-chart-line"></i>Progress</a>
+        <a href="settings.html" class="app-sidebar-link active"><i class="fa-regular fa-gear"></i>Settings</a>
+      </nav>
+      <div class="app-sidebar-footer">
+        <div class="app-sidebar-user">
+          <div class="app-sidebar-user-avatar">JD</div>
+          <div>
+            <div class="app-sidebar-user-name">Jamie Doe</div>
+            <div class="app-sidebar-user-role">Member</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="app-main" style="flex:1;display:flex;flex-direction:column;min-width:0;">
+
+      <header class="app-topbar">
+        <div class="app-topbar-left">
+          <span class="app-topbar-title">Settings</span>
+        </div>
+        <div class="app-topbar-right">
+          <button class="app-topbar-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+          <div class="app-topbar-avatar">JD</div>
+        </div>
+      </header>
+
+      <div class="app-content">
+
+        <div class="card">
+          <div class="card-header">Profile</div>
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+              <div style="width:64px;height:64px;border-radius:50%;background:var(--color-accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;color:var(--color-sidebar);flex-shrink:0;">JD</div>
+              <div>
+                <div style="font-weight:600;font-size:16px;">Jamie Doe</div>
+                <div style="font-size:13px;color:var(--color-muted);">jamie@example.com</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <input class="form-input" type="text" value="Jamie Doe" placeholder="Full Name">
+              <input class="form-input" type="email" value="jamie@example.com" placeholder="Email">
+              <input class="form-input" type="tel" placeholder="(555) 123-4567" value="">
+              <select class="form-select">
+                <option>Early Recovery</option>
+                <option>Maintenance</option>
+                <option selected>Advanced Recovery</option>
+                <option>Relapse Prevention</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-list">
+          <div class="settings-section-title">Notifications</div>
+          <div class="settings-item">
+            <div class="settings-item-label">
+              <h4>Daily Reminder</h4>
+              <p>Get reminded to complete your daily check-in</p>
+            </div>
+            <button class="toggle on"></button>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-label">
+              <h4>Appointment Alerts</h4>
+              <p>Notifications for upcoming appointments</p>
+            </div>
+            <button class="toggle on"></button>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-label">
+              <h4>Community Activity</h4>
+              <p>Replies and activity in your community groups</p>
+            </div>
+            <button class="toggle"></button>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-label">
+              <h4>Resource Tips</h4>
+              <p>New articles, videos, and guides tailored for you</p>
+            </div>
+            <button class="toggle on"></button>
+          </div>
+        </div>
+
+        <div class="settings-list">
+          <div class="settings-section-title">Privacy</div>
+          <div class="settings-item">
+            <div class="settings-item-label">
+              <h4>Show Profile</h4>
+              <p>Let other members see your profile and progress</p>
+            </div>
+            <button class="toggle on"></button>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-label">
+              <h4>Share Progress</h4>
+              <p>Allow your doctor to view your recovery data</p>
+            </div>
+            <button class="toggle on"></button>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-label">
+              <h4>Anonymous Mode</h4>
+              <p>Hide your identity from the community</p>
+            </div>
+            <button class="toggle"></button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block">Save Settings</button>
+
+      </div>
+    </div>
+
+    <nav class="app-tabs">
+      <a href="dashboard.html" class="app-tab"><i class="fa-regular fa-house"></i><span>Home</span></a>
+      <a href="checkin.html" class="app-tab"><i class="fa-regular fa-face-smile"></i><span>Check-in</span></a>
+      <a href="community.html" class="app-tab"><i class="fa-regular fa-comments"></i><span>Community</span></a>
+      <a href="progress.html" class="app-tab"><i class="fa-regular fa-chart-line"></i><span>Progress</span></a>
+      <a href="journal.html" class="app-tab active"><i class="fa-regular fa-bars"></i><span>More</span></a>
+    </nav>
+
+  </div>
+
+  <script>
+    document.querySelector('.sidebar-toggle')?.addEventListener('click', () => {
+      document.querySelector('.app-sidebar').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Rebirth</title>
+  <link rel="icon" href="../logo.png">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="app-sidebar-header">
+        <img src="../logo.png" alt="R"><span>Rebirth Admin</span>
+      </div>
+      <nav class="app-sidebar-nav">
+        <div class="app-sidebar-section">Admin</div>
+        <a href="dashboard.html" class="app-sidebar-link active"><i class="fa-regular fa-chart-pie"></i>Dashboard</a>
+        <a href="users.html" class="app-sidebar-link"><i class="fa-solid fa-users"></i>Users</a>
+        <a href="appointments.html" class="app-sidebar-link"><i class="fa-regular fa-calendar"></i>Appointments</a>
+        <a href="resources.html" class="app-sidebar-link"><i class="fa-regular fa-file-lines"></i>Resources</a>
+        <a href="moderation.html" class="app-sidebar-link"><i class="fa-regular fa-shield"></i>Moderation</a>
+        <a href="analytics.html" class="app-sidebar-link"><i class="fa-regular fa-chart-line"></i>Analytics</a>
+        <div class="app-sidebar-section">Account</div>
+        <a href="../panel/settings.html" class="app-sidebar-link"><i class="fa-regular fa-gear"></i>Settings</a>
+      </nav>
+      <div class="app-sidebar-footer">
+        <div class="app-sidebar-user">
+          <div class="app-sidebar-user-avatar">AU</div>
+          <div><div class="app-sidebar-user-name">Admin User</div><div class="app-sidebar-user-role">Administrator</div></div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="app-main" style="flex:1;display:flex;flex-direction:column;min-width:0;">
+      <header class="app-topbar">
+        <div class="app-topbar-left">
+          <span class="app-topbar-title">Admin Dashboard</span>
+        </div>
+        <div class="app-topbar-right">
+          <button class="app-topbar-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+          <div class="app-topbar-avatar">AU</div>
+        </div>
+      </header>
+
+      <div class="app-content">
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-card-icon green"><i class="fa-solid fa-users"></i></div>
+            <div>
+              <div class="stat-card-value">1,247</div>
+              <div class="stat-card-label">Total Users</div>
+              <div class="stat-card-change up">+12% this month</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon blue"><i class="fa-regular fa-calendar-check"></i></div>
+            <div>
+              <div class="stat-card-value">48</div>
+              <div class="stat-card-label">Active Today</div>
+              <div class="stat-card-change up">+8% this week</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon orange"><i class="fa-regular fa-clock"></i></div>
+            <div>
+              <div class="stat-card-value">23</div>
+              <div class="stat-card-label">Pending Sessions</div>
+              <div class="stat-card-change down">-3% today</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon red"><i class="fa-regular fa-flag"></i></div>
+            <div>
+              <div class="stat-card-value">5</div>
+              <div class="stat-card-label">Reports Flagged</div>
+              <div class="stat-card-change up">+2 today</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="card">
+            <div class="card-header">
+              <h3>Recent Registrations</h3>
+            </div>
+            <div class="card-body">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Stage</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Alex Rivera</td>
+                      <td>alex.r@example.com</td>
+                      <td><span class="badge badge-green">Active</span></td>
+                      <td>Jun 4, 2026</td>
+                    </tr>
+                    <tr>
+                      <td>Sarah Chen</td>
+                      <td>s.chen@example.com</td>
+                      <td><span class="badge badge-orange">Onboarding</span></td>
+                      <td>Jun 3, 2026</td>
+                    </tr>
+                    <tr>
+                      <td>Marcus Webb</td>
+                      <td>mwebb@example.com</td>
+                      <td><span class="badge badge-green">Active</span></td>
+                      <td>Jun 3, 2026</td>
+                    </tr>
+                    <tr>
+                      <td>Priya Kapoor</td>
+                      <td>p.kapoor@example.com</td>
+                      <td><span class="badge badge-gray">Pending</span></td>
+                      <td>Jun 2, 2026</td>
+                    </tr>
+                    <tr>
+                      <td>James O'Brien</td>
+                      <td>jobrien@example.com</td>
+                      <td><span class="badge badge-orange">Onboarding</span></td>
+                      <td>Jun 2, 2026</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Upcoming Sessions</h3>
+            </div>
+            <div class="card-body">
+              <div class="appointment-list">
+                <div class="appointment-item">
+                  <div class="appointment-date">
+                    <span class="appointment-date-day">10</span>
+                    <span class="appointment-date-month">AM</span>
+                  </div>
+                  <div class="appointment-info">
+                    <h4>Marcus Webb</h4>
+                    <p>Dr. Sarah Mitchell</p>
+                  </div>
+                  <span class="badge badge-green">Confirmed</span>
+                </div>
+                <div class="appointment-item">
+                  <div class="appointment-date">
+                    <span class="appointment-date-day">2</span>
+                    <span class="appointment-date-month">PM</span>
+                  </div>
+                  <div class="appointment-info">
+                    <h4>Emily Torres</h4>
+                    <p>Dr. James Park</p>
+                  </div>
+                  <span class="badge badge-green">Confirmed</span>
+                </div>
+                <div class="appointment-item">
+                  <div class="appointment-date">
+                    <span class="appointment-date-day">4</span>
+                    <span class="appointment-date-month">PM</span>
+                  </div>
+                  <div class="appointment-info">
+                    <h4>David Kim</h4>
+                    <p>Dr. Lisa Chang</p>
+                  </div>
+                  <span class="badge badge-orange">Pending</span>
+                </div>
+                <div class="appointment-item">
+                  <div class="appointment-date">
+                    <span class="appointment-date-day">9</span>
+                    <span class="appointment-date-month">AM</span>
+                  </div>
+                  <div class="appointment-info">
+                    <h4>Rachel Adams</h4>
+                    <p>Dr. Michael Torres</p>
+                  </div>
+                  <span class="badge badge-gray">Rescheduled</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 24px;">
+          <div class="card-header">
+            <h3>Platform Overview</h3>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; gap: 24px; margin-bottom: 24px; flex-wrap: wrap;">
+              <div style="flex: 1; min-width: 140px;">
+                <div class="stat-card-value" style="font-size: 24px;">89.4%</div>
+                <div class="stat-card-label">Sessions Completed</div>
+              </div>
+              <div style="flex: 1; min-width: 140px;">
+                <div class="stat-card-value" style="font-size: 24px;">3.2k</div>
+                <div class="stat-card-label">Monthly Active</div>
+              </div>
+              <div style="flex: 1; min-width: 140px;">
+                <div class="stat-card-value" style="font-size: 24px;">14.7</div>
+                <div class="stat-card-label">Avg. Sessions/User</div>
+              </div>
+              <div style="flex: 1; min-width: 140px;">
+                <div class="stat-card-value" style="font-size: 24px;">92%</div>
+                <div class="stat-card-label">Retention Rate</div>
+              </div>
+            </div>
+            <div class="chart-box">
+              <div class="chart-box-inline">
+                <div class="chart-bar" style="height:60%;background:var(--color-accent);"></div>
+                <div class="chart-bar" style="height:80%;background:var(--color-primary);"></div>
+                <div class="chart-bar" style="height:45%;background:var(--color-accent);"></div>
+                <div class="chart-bar" style="height:90%;background:var(--color-success);"></div>
+                <div class="chart-bar" style="height:55%;background:var(--color-accent);"></div>
+                <div class="chart-bar" style="height:70%;background:var(--color-primary);"></div>
+                <div class="chart-bar" style="height:85%;background:var(--color-success);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
