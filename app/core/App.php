@@ -71,6 +71,32 @@ class App {
     $this->router->get('/therapist/sos/count', 'PanelController@sosCount');
     $this->router->get('/therapist/availability/check', 'PanelController@checkAvailability');
 
+    // Clinical Notes
+    $this->router->post('/therapist/patient/{id}/notes/create', 'PanelController@createClinicalNote');
+
+    // Relapse Tracking
+    $this->router->get('/panel/relapses', 'PanelController@relapses');
+    $this->router->post('/panel/relapses/create', 'PanelController@createRelapse');
+    $this->router->post('/panel/relapses/delete', 'PanelController@deleteRelapse');
+
+    // Treatment Plans
+    $this->router->get('/panel/treatment-plan', 'PanelController@myTreatmentPlan');
+    $this->router->get('/therapist/patient/{id}/plans', 'PanelController@therapistPlans');
+    $this->router->get('/therapist/patient/{id}/plans/create', 'PanelController@therapistPlanCreate');
+    $this->router->post('/therapist/patient/{id}/plans/create', 'PanelController@therapistPlanCreatePost');
+    $this->router->get('/therapist/patient/{id}/plans/edit/{planId}', 'PanelController@therapistPlanEdit');
+    $this->router->post('/therapist/patient/{id}/plans/update', 'PanelController@therapistPlanUpdate');
+    $this->router->post('/therapist/patient/{id}/plans/delete', 'PanelController@therapistPlanDelete');
+
+    // Notifications
+    $this->router->get('/notifications/count', 'PanelController@notificationCount');
+    $this->router->get('/notifications/list', 'PanelController@notificationList');
+    $this->router->post('/notifications/read', 'PanelController@notificationRead');
+    $this->router->post('/notifications/read-all', 'PanelController@notificationReadAll');
+
+    // Patient Timeline
+    $this->router->get('/therapist/patient/{id}/timeline', 'PanelController@patientTimeline');
+
     // Admin availability endpoint
     $this->router->get('/admin/appointments/availability', 'AdminController@getAvailability');
 

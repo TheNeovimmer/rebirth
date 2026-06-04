@@ -37,8 +37,10 @@
   <div class="quick-actions">
     <a href="/panel/checkin" class="btn" style="display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-regular fa-face-smile"></i> Check In</a>
     <a href="/panel/journal" class="btn" style="display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-solid fa-book"></i> Journal</a>
+    <a href="/panel/treatment-plan" class="btn" style="display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-solid fa-clipboard-list"></i> My Plan</a>
+    <a href="/panel/relapses" class="btn" style="display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-solid fa-heart-crack"></i> Relapses</a>
     <a href="/panel/community" class="btn" style="display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-regular fa-comments"></i> Community</a>
-    <a href="#" class="btn danger" style="display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-solid fa-phone"></i> SOS</a>
+    <a href="/panel/sos" class="btn danger" style="display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-solid fa-phone"></i> SOS</a>
   </div>
 </div>
 

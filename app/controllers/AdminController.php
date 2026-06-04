@@ -105,6 +105,11 @@ class AdminController extends Controller {
         'date_time' => $dateTime,
         'status' => 'confirmed',
       ]);
+      $patient = Database::fetch("SELECT name FROM users WHERE id = ?", [$userId]);
+      Notification::create($userId, 'appointment', 'Appointment scheduled', $title . ' on ' . date('M j, g:i A', strtotime($dateTime)), '/panel/appointments');
+      if ($therapistId) {
+        Notification::create($therapistId, 'appointment', 'New appointment with ' . ($patient['name'] ?? 'patient'), $title . ' on ' . date('M j, g:i A', strtotime($dateTime)), '/panel/appointments');
+      }
     }
     $this->redirect('/admin/appointments?success=Appointment created');
   }

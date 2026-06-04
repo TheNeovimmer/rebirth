@@ -48,8 +48,10 @@
         <a href="/panel/community" class="app-sidebar-link <?= $page === 'Community' ? 'active' : '' ?>"><i class="fa-regular fa-comments"></i>Community</a>
         <a href="/panel/messages" class="app-sidebar-link <?= $page === 'Messages' ? 'active' : '' ?>"><i class="fa-regular fa-comment-dots"></i>Messages</a>
         <a href="/panel/sos" class="app-sidebar-link <?= $page === 'SOS' ? 'active' : '' ?>"><i class="fa-solid fa-triangle-exclamation" style="color:var(--color-danger);"></i>SOS</a>
+        <a href="/panel/relapses" class="app-sidebar-link <?= $page === 'Relapse Tracking' ? 'active' : '' ?>"><i class="fa-solid fa-heart-crack"></i>Relapse Tracking</a>
         <a href="/panel/resources" class="app-sidebar-link <?= $page === 'Resources' ? 'active' : '' ?>"><i class="fa-regular fa-file-lines"></i>Resources</a>
         <div class="app-sidebar-section">Account</div>
+        <a href="/panel/treatment-plan" class="app-sidebar-link <?= $page === 'Treatment Plan' ? 'active' : '' ?>"><i class="fa-solid fa-clipboard-list"></i>Treatment Plan</a>
         <a href="/panel/progress" class="app-sidebar-link <?= $page === 'Progress' ? 'active' : '' ?>"><i class="fa-solid fa-chart-line"></i>Progress</a>
         <a href="/panel/settings" class="app-sidebar-link <?= $page === 'Settings' ? 'active' : '' ?>"><i class="fa-solid fa-gear"></i>Settings</a>
         <a href="/logout" class="app-sidebar-link" style="color:var(--color-danger);"><i class="fa-solid fa-right-from-bracket"></i>Sign Out</a>
@@ -77,7 +79,16 @@
           <span class="app-topbar-title"><?= htmlspecialchars($page) ?></span>
         </div>
         <div class="app-topbar-right">
-          <button class="app-topbar-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+          <div class="notif-wrap" style="position:relative;">
+            <button class="app-topbar-btn" id="notifBell"><i class="fa-regular fa-bell"></i><span class="dot" id="notifDot"></span></button>
+            <div class="notif-dropdown" id="notifDropdown" style="display:none;">
+              <div class="notif-header">
+                <strong>Notifications</strong>
+                <button class="btn btn-ghost btn-xs" id="markAllRead" style="font-size:11px;">Mark all read</button>
+              </div>
+              <div id="notifList" style="max-height:320px;overflow-y:auto;"></div>
+            </div>
+          </div>
           <?php if (!empty($user['avatar'])): ?>
           <img src="/uploads/avatars/<?= htmlspecialchars($user['avatar']) ?>" alt="" class="app-topbar-avatar" style="object-fit:cover;">
           <?php else: ?>

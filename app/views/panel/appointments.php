@@ -66,8 +66,8 @@
 <div class="card">
   <h2>Need Help Now?</h2>
   <div class="quick-actions">
-    <a href="#" class="btn danger" style="flex:1;display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-solid fa-phone"></i> Emergency</a>
-    <a href="#" class="btn" style="flex:1;display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-regular fa-clock"></i> Reschedule</a>
+    <a href="/panel/sos" class="btn danger" style="flex:1;display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-solid fa-phone"></i> Emergency</a>
+    <a href="/panel/appointments" class="btn" style="flex:1;display:flex;align-items:center;gap:8px;justify-content:center;"><i class="fa-regular fa-clock"></i> Reschedule</a>
   </div>
   <div style="margin-top:12px;text-align:center;">
     <span style="font-size:14px;color:var(--color-text-muted);">24/7 Crisis Hotline: <strong>1-800-REBIRTH</strong></span>

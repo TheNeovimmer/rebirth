@@ -172,6 +172,13 @@ class PanelController extends Controller {
       $conv = Database::fetch("SELECT * FROM conversations WHERE id = ? AND (patient_id = ? OR therapist_id = ?)", [$convId, $user['id'], $user['id']]);
       if ($conv) {
         ConversationMessage::send($convId, $user['id'], $content);
+        $recipientId = $conv['patient_id'] == $user['id'] ? $conv['therapist_id'] : $conv['patient_id'];
+        $recipientLink = '/panel/messages';
+        $convCheck = Database::fetch("SELECT therapist_id FROM conversations WHERE id = ?", [$convId]);
+        if ($convCheck && $convCheck['therapist_id'] == $recipientId) {
+          $recipientLink = '/therapist/messages';
+        }
+        Notification::create($recipientId, 'message', 'New message from ' . $user['name'], mb_substr($content, 0, 80), $recipientLink, $convId);
       }
     }
     $this->redirect($_SERVER['HTTP_REFERER'] ?? '/panel/messages');
@@ -212,6 +219,7 @@ class PanelController extends Controller {
     $therapistId = $this->getPatientTherapistId($user['id']);
     if ($therapistId) {
       SOSAlert::create($user['id'], $therapistId);
+      Notification::create($therapistId, 'sos', 'SOS Alert from ' . $user['name'], 'Urgent help requested', '/therapist/sos', $user['id']);
     }
     $this->redirect('/panel/sos?success=SOS alert sent to your therapist');
   }
@@ -260,6 +268,14 @@ class PanelController extends Controller {
             'file_path' => 'uploads/resources/' . $user['id'] . '/' . $filename,
             'description' => $description,
           ]);
+          if ($patientId) {
+            Notification::create($patientId, 'resource', 'New resource: ' . $title, $description ?? 'Resource shared by your therapist', '/panel/resources');
+          } else {
+            $patients = User::patientsForTherapist($user['id']);
+            foreach ($patients as $p) {
+              Notification::create($p['id'], 'resource', 'New resource: ' . $title, $description ?? 'Resource shared by your therapist', '/panel/resources');
+            }
+          }
         }
       }
     }
@@ -398,6 +414,219 @@ class PanelController extends Controller {
     exit;
   }
 
+  // ─── CLINICAL NOTES ───
+
+  public function createClinicalNote(int $id): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $isAssigned = Database::exists("SELECT id FROM therapist_patients WHERE therapist_id = ? AND patient_id = ?", [$user['id'], $id]);
+    if (!$isAssigned) { http_response_code(403); exit; }
+    $content = trim($_POST['content'] ?? '');
+    $sessionDate = !empty($_POST['session_date']) ? $_POST['session_date'] : null;
+    if ($content) {
+      ClinicalNote::create($id, $user['id'], $content, $sessionDate);
+    }
+    $this->redirect('/therapist/patient/' . $id . '?success=Note saved');
+  }
+
+  // ─── RELAPSE TRACKING ───
+
+  public function relapses(): void {
+    $this->requireRole('member');
+    $user = $this->user();
+    $therapistId = $this->getPatientTherapistId($user['id']);
+    $relapses = $therapistId ? Relapse::forPatient($user['id']) : [];
+    $triggers = $therapistId ? Relapse::triggerAnalysis($user['id'], $therapistId) : [];
+    $this->renderPanel('panel/relapses', 'Relapse Tracking', [
+      'relapses' => $relapses,
+      'triggers' => $triggers,
+      'hasTherapist' => $therapistId !== null,
+      'therapistId' => $therapistId,
+    ]);
+  }
+
+  public function createRelapse(): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $therapistId = $this->getPatientTherapistId($user['id']);
+    if (!$therapistId) { $this->redirect('/panel/relapses?error=No therapist assigned'); }
+    Relapse::create($user['id'], $therapistId, [
+      'relapse_date' => $_POST['relapse_date'] ?? date('Y-m-d H:i:s'),
+      'trigger' => trim($_POST['trigger'] ?? ''),
+      'severity' => $_POST['severity'] ?? 'moderate',
+      'description' => trim($_POST['description'] ?? ''),
+      'action_taken' => trim($_POST['action_taken'] ?? ''),
+    ]);
+    Notification::create($therapistId, 'relapse', $user['name'] . ' logged a relapse', 'Severity: ' . ($_POST['severity'] ?? 'moderate'), '/therapist/patient/' . $user['id'] . '/timeline', $user['id']);
+    $this->redirect('/panel/relapses?success=Relapse recorded');
+  }
+
+  public function deleteRelapse(): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $id = (int)($_POST['id'] ?? 0);
+    Relapse::delete($id, $user['id']);
+    $this->redirect('/panel/relapses?success=Entry deleted');
+  }
+
+  // ─── TREATMENT PLANS ───
+
+  public function myTreatmentPlan(): void {
+    $this->requireRole('member');
+    $user = $this->user();
+    $activePlan = TreatmentPlan::activeForPatient($user['id']);
+    $allPlans = TreatmentPlan::forPatient($user['id']);
+    $this->renderPanel('panel/treatment-plan', 'Treatment Plan', [
+      'activePlan' => $activePlan,
+      'allPlans' => $allPlans,
+    ]);
+  }
+
+  public function therapistPlans(int $id): void {
+    $this->requireRole('therapist');
+    $user = $this->user();
+    $isAssigned = Database::exists("SELECT id FROM therapist_patients WHERE therapist_id = ? AND patient_id = ?", [$user['id'], $id]);
+    if (!$isAssigned) { http_response_code(403); exit; }
+    $patient = User::find($id);
+    $plans = TreatmentPlan::forPatientTherapist($id, $user['id']);
+    $this->renderPanel('panel/therapist-plans', 'Treatment Plans', [
+      'patient' => $patient, 'plans' => $plans,
+    ]);
+  }
+
+  public function therapistPlanCreate(int $id): void {
+    $this->requireRole('therapist');
+    $user = $this->user();
+    $isAssigned = Database::exists("SELECT id FROM therapist_patients WHERE therapist_id = ? AND patient_id = ?", [$user['id'], $id]);
+    if (!$isAssigned) { http_response_code(403); exit; }
+    $patient = User::find($id);
+    $this->renderPanel('panel/therapist-plan-form', 'Create Treatment Plan', [
+      'patient' => $patient, 'plan' => null,
+    ]);
+  }
+
+  public function therapistPlanCreatePost(int $id): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $isAssigned = Database::exists("SELECT id FROM therapist_patients WHERE therapist_id = ? AND patient_id = ?", [$user['id'], $id]);
+    if (!$isAssigned) { http_response_code(403); exit; }
+    $title = trim($_POST['title'] ?? '');
+    if (!$title) { $this->redirect('/therapist/patient/' . $id . '/plans/create?error=Title is required'); }
+    TreatmentPlan::create($id, $user['id'], [
+      'title' => $title,
+      'goals' => trim($_POST['goals'] ?? ''),
+      'objectives' => trim($_POST['objectives'] ?? ''),
+      'activities' => trim($_POST['activities'] ?? ''),
+      'coping_strategies' => trim($_POST['coping_strategies'] ?? ''),
+      'recommendations' => trim($_POST['recommendations'] ?? ''),
+    ]);
+    $patient = User::find($id);
+    Notification::create($id, 'treatment_plan', 'New treatment plan: ' . $title, 'Your therapist created a new treatment plan', '/panel/treatment-plan');
+    $this->redirect('/therapist/patient/' . $id . '/plans?success=Plan created');
+  }
+
+  public function therapistPlanEdit(int $id, int $planId): void {
+    $this->requireRole('therapist');
+    $user = $this->user();
+    $plan = TreatmentPlan::find($planId);
+    if (!$plan || $plan['therapist_id'] != $user['id']) { http_response_code(404); exit; }
+    $patient = User::find($id);
+    $this->renderPanel('panel/therapist-plan-form', 'Edit Treatment Plan', [
+      'patient' => $patient, 'plan' => $plan,
+    ]);
+  }
+
+  public function therapistPlanUpdate(int $id): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $planId = (int)($_POST['plan_id'] ?? 0);
+    $plan = TreatmentPlan::find($planId);
+    if (!$plan || $plan['therapist_id'] != $user['id']) { http_response_code(404); exit; }
+    TreatmentPlan::update($planId, [
+      'title' => trim($_POST['title'] ?? ''),
+      'goals' => trim($_POST['goals'] ?? ''),
+      'objectives' => trim($_POST['objectives'] ?? ''),
+      'activities' => trim($_POST['activities'] ?? ''),
+      'coping_strategies' => trim($_POST['coping_strategies'] ?? ''),
+      'recommendations' => trim($_POST['recommendations'] ?? ''),
+      'status' => $_POST['status'] ?? 'active',
+    ]);
+    $this->redirect('/therapist/patient/' . $id . '/plans?success=Plan updated');
+  }
+
+  public function therapistPlanDelete(int $id): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $planId = (int)($_POST['plan_id'] ?? 0);
+    TreatmentPlan::delete($planId, $user['id']);
+    $this->redirect('/therapist/patient/' . $id . '/plans?success=Plan deleted');
+  }
+
+  // ─── NOTIFICATIONS ───
+
+  public function notificationCount(): void {
+    $user = $this->user();
+    header('Content-Type: application/json');
+    echo json_encode(['count' => Notification::unreadCount($user['id'])]);
+    exit;
+  }
+
+  public function notificationList(): void {
+    $user = $this->user();
+    $notifications = Notification::recent($user['id'], 10);
+    header('Content-Type: application/json');
+    echo json_encode($notifications);
+    exit;
+  }
+
+  public function notificationRead(): void {
+    $user = $this->user();
+    $id = (int)($_POST['id'] ?? 0);
+    if ($id) Notification::markRead($id, $user['id']);
+    header('Content-Type: application/json');
+    echo json_encode(['ok' => true]);
+    exit;
+  }
+
+  public function notificationReadAll(): void {
+    $user = $this->user();
+    Notification::markAllRead($user['id']);
+    header('Content-Type: application/json');
+    echo json_encode(['ok' => true]);
+    exit;
+  }
+
+  // ─── PATIENT TIMELINE ───
+
+  public function patientTimeline(int $id): void {
+    $this->requireRole('therapist');
+    $user = $this->user();
+    $isAssigned = Database::exists("SELECT id FROM therapist_patients WHERE therapist_id = ? AND patient_id = ?", [$user['id'], $id]);
+    if (!$isAssigned) { http_response_code(403); exit; }
+    $patient = User::find($id);
+    $events = [];
+    $checkins = Database::fetchAll("SELECT 'checkin' as type, id, check_date as event_date, CONCAT('Mood: ', mood, IF(craving_level IS NOT NULL, CONCAT(' | Craving: ', craving_level, '/100'), '')) as summary, note as detail FROM check_ins WHERE user_id = ? ORDER BY check_date DESC LIMIT 20", [$id]);
+    foreach ($checkins as $e) { $events[] = $e; }
+    $journals = Database::fetchAll("SELECT 'journal' as type, id, created_at as event_date, LEFT(content, 100) as summary, content as detail FROM journal_entries WHERE user_id = ? ORDER BY created_at DESC LIMIT 20", [$id]);
+    foreach ($journals as $e) { $events[] = $e; }
+    $appts = Database::fetchAll("SELECT 'appointment' as type, id, date_time as event_date, title as summary, CONCAT('Status: ', status) as detail FROM appointments WHERE user_id = ? ORDER BY date_time DESC LIMIT 20", [$id]);
+    foreach ($appts as $e) { $events[] = $e; }
+    $resources = Database::fetchAll("SELECT 'resource' as type, id, created_at as event_date, CONCAT('Shared: ', title) as summary, description as detail FROM therapist_resources WHERE patient_id = ? OR (patient_id IS NULL AND therapist_id = ?) ORDER BY created_at DESC LIMIT 20", [$id, $user['id']]);
+    foreach ($resources as $e) { $events[] = $e; }
+    $sos = Database::fetchAll("SELECT 'sos' as type, id, created_at as event_date, CONCAT('SOS Alert: ', status) as summary, notes as detail FROM sos_alerts WHERE patient_id = ? ORDER BY created_at DESC LIMIT 20", [$id]);
+    foreach ($sos as $e) { $events[] = $e; }
+    $relapses = Database::fetchAll("SELECT 'relapse' as type, id, relapse_date as event_date, CONCAT('Relapse (', severity, ')') as summary, CONCAT(IFNULL(CONCAT('Trigger: ', `trigger`, ' | '), ''), IFNULL(CONCAT('Action: ', action_taken), '')) as detail FROM relapses WHERE patient_id = ? ORDER BY relapse_date DESC LIMIT 20", [$id]);
+    foreach ($relapses as $e) { $events[] = $e; }
+    $plans = Database::fetchAll("SELECT 'treatment_plan' as type, id, created_at as event_date, CONCAT('Plan: ', title) as summary, CONCAT('Status: ', status) as detail FROM treatment_plans WHERE patient_id = ? ORDER BY created_at DESC LIMIT 20", [$id]);
+    foreach ($plans as $e) { $events[] = $e; }
+    $notes = Database::fetchAll("SELECT 'clinical_note' as type, id, created_at as event_date, 'Clinical note' as summary, LEFT(content, 100) as detail FROM clinical_notes WHERE patient_id = ? AND therapist_id = ? ORDER BY created_at DESC LIMIT 20", [$id, $user['id']]);
+    foreach ($notes as $e) { $events[] = $e; }
+    usort($events, fn($a, $b) => strtotime($b['event_date']) - strtotime($a['event_date']));
+    $this->renderPanel('panel/patient-timeline', 'Patient Timeline', [
+      'patient' => $patient, 'events' => $events,
+    ]);
+  }
+
   public function appointments(): void {
     $user = $this->user();
     if ($user['role'] === 'therapist') {
@@ -430,6 +659,9 @@ class PanelController extends Controller {
         'date_time' => $dateTime,
         'status' => 'pending',
       ]);
+      if ($therapistId) {
+        Notification::create($therapistId, 'appointment', 'New appointment from ' . $user['name'], $title . ' on ' . date('M j, g:i A', strtotime($dateTime)), '/panel/appointments');
+      }
     }
     $this->redirect('/panel/appointments?success=Appointment booked');
   }
@@ -582,11 +814,17 @@ class PanelController extends Controller {
     );
     $journal = JournalEntry::recentForTherapistPatient($id, 10);
     $milestones = Milestone::forUser($id);
+    $clinicalNotes = ClinicalNote::forPatient($id, $user['id']);
+    $relapses = Relapse::forTherapistPatient($id, $user['id']);
+    $triggers = Relapse::triggerAnalysis($id, $user['id']);
     $this->renderPanel('panel/patient-detail', 'Patient Detail', [
       'patient' => $patient,
       'checkins' => $checkins,
       'journal' => $journal,
       'milestones' => $milestones,
+      'clinicalNotes' => $clinicalNotes,
+      'relapses' => $relapses,
+      'triggers' => $triggers,
     ]);
   }
 

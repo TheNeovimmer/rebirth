@@ -14,9 +14,13 @@
 <?php else: ?>
 <div class="card" style="display:flex;flex-direction:column;height:calc(100dvh - 220px);">
   <div class="chat-header" style="display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--color-border);margin-bottom:12px;">
+    <?php if (!empty($conversation['therapist_avatar'])): ?>
+    <img src="/uploads/avatars/<?= htmlspecialchars($conversation['therapist_avatar']) ?>" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+    <?php else: ?>
     <div style="width:36px;height:36px;border-radius:50%;background:var(--color-accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--color-primary-dark);flex-shrink:0;">
       <?= htmlspecialchars($conversation['therapist_initials'] ?? 'TH') ?>
     </div>
+    <?php endif; ?>
     <div>
       <strong><?= htmlspecialchars($conversation['therapist_name'] ?? 'Your Therapist') ?></strong>
       <div style="font-size:12px;color:var(--color-text-muted);" id="availabilityStatus">Checking availability...</div>

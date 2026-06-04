@@ -51,7 +51,16 @@
           <span class="app-topbar-title">Admin <?= htmlspecialchars($page) ?></span>
         </div>
         <div class="app-topbar-right">
-          <button class="app-topbar-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
+          <div class="notif-wrap" style="position:relative;">
+            <button class="app-topbar-btn" id="notifBell"><i class="fa-regular fa-bell"></i><span class="dot" id="notifDot"></span></button>
+            <div class="notif-dropdown" id="notifDropdown" style="display:none;">
+              <div class="notif-header">
+                <strong>Notifications</strong>
+                <button class="btn btn-ghost btn-xs" id="markAllRead" style="font-size:11px;">Mark all read</button>
+              </div>
+              <div id="notifList" style="max-height:320px;overflow-y:auto;"></div>
+            </div>
+          </div>
           <?php if (!empty($user['avatar'])): ?>
           <img src="/uploads/avatars/<?= htmlspecialchars($user['avatar']) ?>" alt="" class="app-topbar-avatar" style="object-fit:cover;">
           <?php else: ?>
@@ -64,6 +73,7 @@
       </div>
     </div>
   </div>
+  <script src="/js/app.js"></script>
   <script src="/js/admin.js"></script>
 </body>
 </html>
