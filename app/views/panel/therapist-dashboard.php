@@ -1,6 +1,6 @@
 <div class="therapist-stats">
   <div class="stat-card">
-    <div class="stat-icon green"><i class="fa-regular fa-users"></i></div>
+    <div class="stat-icon green"><i class="fa-solid fa-users"></i></div>
     <div>
       <div class="stat-value"><?= $patientCount ?></div>
       <div class="stat-label">Patients</div>
@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="stat-card">
-    <div class="stat-icon red"><i class="fa-regular fa-circle-exclamation"></i></div>
+    <div class="stat-icon red"><i class="fa-solid fa-circle-exclamation"></i></div>
     <div>
       <div class="stat-value" style="color:var(--color-danger);"><?= $activeSos ?></div>
       <div class="stat-label">Active SOS</div>
@@ -84,7 +84,7 @@
   <div class="quick-actions">
     <a href="/therapist/patients" class="btn"><i class="fa-regular fa-user"></i> My Patients</a>
     <a href="/therapist/messages" class="btn"><i class="fa-regular fa-comment-dots"></i> Messages</a>
-    <a href="/therapist/sos" class="btn danger"><i class="fa-regular fa-circle-exclamation"></i> SOS</a>
+    <a href="/therapist/sos" class="btn danger"><i class="fa-solid fa-circle-exclamation"></i> SOS</a>
     <a href="/therapist/resources" class="btn"><i class="fa-regular fa-bookmark"></i> Resources</a>
   </div>
 </div>
