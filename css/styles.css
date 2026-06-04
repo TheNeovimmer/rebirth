@@ -1192,9 +1192,15 @@ ul {
 /* ─── RESPONSIVE ─── */
 
 @media (max-width: 1024px) {
+  .hero {
+    min-height: auto;
+    padding-bottom: 48px;
+  }
+
   .hero .container {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 32px;
   }
 
   .hero-content {
@@ -1214,15 +1220,16 @@ ul {
   }
 
   .hero-image-wrapper img {
-    max-width: 350px;
+    max-width: 280px;
   }
 
   .hero-bg-circle {
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     right: 50%;
     transform: translate(50%, -50%);
-    top: 30%;
+    top: 15%;
+    opacity: 0.05;
   }
 
   .about .container {
@@ -1348,12 +1355,47 @@ ul {
   }
 
   .hero {
-    padding-top: calc(var(--header-height) + 24px);
-    padding-bottom: 48px;
+    min-height: auto;
+    padding-top: calc(var(--header-height) + 12px);
+    padding-bottom: 32px;
+  }
+
+  .hero .container {
+    gap: 24px;
   }
 
   .hero h1 {
-    font-size: clamp(32px, 8vw, 44px);
+    font-size: clamp(24px, 6vw, 34px);
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+
+  .hero p {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .hero-image-wrapper img {
+    max-width: 200px;
+  }
+
+  .hero-bg-circle {
+    display: none;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-tag {
+    font-size: 12px;
+    padding: 5px 14px;
   }
 
   .about,
@@ -1362,11 +1404,55 @@ ul {
   .testimonials,
   .community,
   .cta {
-    padding: 64px 24px;
+    padding: 56px 20px;
+  }
+
+  .about h2 {
+    font-size: clamp(28px, 6vw, 36px);
+  }
+
+  .about p {
+    font-size: 15px;
   }
 
   .features-header {
-    margin-bottom: 40px;
+    margin-bottom: 32px;
+  }
+
+  .features-header h2 {
+    font-size: clamp(28px, 6vw, 36px);
+  }
+
+  .features-header p {
+    font-size: 15px;
+  }
+
+  .showcase-card {
+    padding: 20px;
+    gap: 12px;
+  }
+
+  .showcase-card-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 17px;
+    border-radius: 10px;
+  }
+
+  .showcase-card-body h4 {
+    font-size: 15px;
+  }
+
+  .showcase-card-body p {
+    font-size: 13px;
+  }
+
+  .showcase-mockup img {
+    max-width: 220px;
+  }
+
+  .stats-label {
+    font-size: clamp(20px, 5vw, 28px);
   }
 
   .stats-grid {
@@ -1375,73 +1461,12 @@ ul {
     gap: 24px;
   }
 
-  .leaflet-step-label {
-    padding: 24px 24px;
-  }
-
-  .leaflet-step-label h3 {
-    font-size: 19px;
-  }
-
-  .community-features {
-    grid-template-columns: 1fr;
-  }
-
-  .community-secondary-image {
-    width: 90%;
-  }
-
-  .community-live-badge {
-    font-size: 14px;
-    padding: 10px 20px;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    text-align: center;
-    gap: 8px;
-  }
-
-  .footer-contact {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .download-badges {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .testimonial-nav {
-    flex-wrap: wrap;
-  }
-
-  .cta-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-image-wrapper img {
-    max-width: 280px;
-  }
-
   .stat-number {
     font-size: 28px;
   }
 
-  .showcase-mockup img {
-    max-width: 220px;
-  }
-
   .leaflet-step-label {
-    padding: 20px 20px;
+    padding: 22px 24px;
   }
 
   .leaflet-step-label h3 {
@@ -1452,8 +1477,415 @@ ul {
     font-size: 14px;
   }
 
+  .testimonial-carousel {
+    min-height: 200px;
+  }
+
+  .testimonial-text {
+    font-size: clamp(18px, 4vw, 22px);
+    margin-bottom: 20px;
+  }
+
+  .testimonial-author {
+    font-size: 18px;
+  }
+
+  .testimonial-role {
+    font-size: 14px;
+  }
+
+  .testimonial-nav {
+    gap: 16px;
+  }
+
+  .testimonial-nav button {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .testimonial-dot.active {
+    width: 28px;
+  }
+
+  .community-header h2 {
+    font-size: clamp(26px, 6vw, 34px);
+  }
+
+  .community-header p {
+    font-size: 15px;
+  }
+
+  .community-features {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .community-feature-card {
+    padding: 24px 20px;
+  }
+
+  .community-feature-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 19px;
+  }
+
+  .community-secondary-image {
+    width: 90%;
+    margin-top: -24px;
+  }
+
+  .community-live-badge {
+    font-size: 13px;
+    padding: 10px 18px;
+  }
+
+  .cta h2 {
+    font-size: clamp(28px, 7vw, 40px);
+  }
+
+  .cta p {
+    font-size: 15px;
+    margin-bottom: 28px;
+  }
+
+  .cta-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .cta-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn-lg {
+    padding: 14px 28px;
+    font-size: 15px;
+  }
+
+  .download-badges {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .download-badge {
+    width: 100%;
+    max-width: 260px;
+    justify-content: center;
+    padding: 12px 20px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .footer h4 {
+    margin-bottom: 16px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .footer-contact {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-newsletter-form input {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+
+  .footer-newsletter-form button {
+    padding: 14px 20px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .hero {
+    padding-top: calc(var(--header-height) + 8px);
+    padding-bottom: 24px;
+    min-height: auto;
+  }
+
+  .hero .container {
+    gap: 16px;
+  }
+
+  .hero h1 {
+    font-size: clamp(20px, 6vw, 26px);
+    letter-spacing: 0;
+    margin-bottom: 10px;
+  }
+
+  .hero p {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .hero-image-wrapper img {
+    max-width: 160px;
+  }
+
+  .about,
+  .features,
+  .how-it-works,
+  .testimonials,
+  .community,
+  .cta {
+    padding: 40px 16px;
+  }
+
+  .features-header {
+    margin-bottom: 24px;
+  }
+
+  .features-header h2 {
+    font-size: clamp(24px, 7vw, 30px);
+  }
+
+  .features-header p {
+    font-size: 14px;
+  }
+
+  .features-showcase {
+    gap: 16px;
+  }
+
+  .showcase-card {
+    padding: 16px;
+    gap: 10px;
+  }
+
+  .showcase-card-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+    border-radius: 8px;
+  }
+
+  .showcase-card-body h4 {
+    font-size: 14px;
+  }
+
+  .showcase-card-body p {
+    font-size: 12px;
+  }
+
+  .showcase-mockup img {
+    max-width: 180px;
+  }
+
+  .stats-bar {
+    padding: 32px 16px;
+  }
+
+  .stats-grid {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .stat-number {
+    font-size: 24px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    margin-top: 2px;
+  }
+
+  .stats-label {
+    font-size: clamp(18px, 5vw, 24px);
+  }
+
+  .leaflet-step {
+    padding: 20px 0;
+  }
+
+  .leaflet-step-label {
+    padding: 16px 18px;
+  }
+
+  .leaflet-step-label h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .leaflet-step-label p {
+    font-size: 13px;
+  }
+
+  .leaflet-step-tag {
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .testimonial-carousel {
+    min-height: 160px;
+  }
+
+  .testimonial-card {
+    padding: 24px 0;
+  }
+
+  .testimonial-text {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .testimonial-author {
+    font-size: 16px;
+  }
+
+  .testimonial-role {
+    font-size: 13px;
+  }
+
+  .testimonial-nav button {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .community-header {
+    margin-bottom: 40px;
+  }
+
+  .community-header h2 {
+    font-size: clamp(22px, 6vw, 28px);
+  }
+
+  .community-header p {
+    font-size: 14px;
+  }
+
+  .community-images {
+    gap: 16px;
+  }
+
   .community-secondary-image {
     width: 95%;
-    margin-top: -24px;
+    margin-top: -16px;
+  }
+
+  .community-live-badge {
+    font-size: 12px;
+    padding: 8px 16px;
+    gap: 8px;
+  }
+
+  .community-features {
+    gap: 12px;
+  }
+
+  .community-feature-card {
+    padding: 20px 16px;
+  }
+
+  .community-feature-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+
+  .community-feature-card h4 {
+    font-size: 15px;
+  }
+
+  .community-feature-card p {
+    font-size: 13px;
+  }
+
+  .cta h2 {
+    font-size: clamp(24px, 7vw, 32px);
+    margin-bottom: 16px;
+  }
+
+  .cta p {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .btn-lg {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+
+  .download-badge {
+    max-width: 220px;
+    padding: 10px 16px;
+    gap: 10px;
+  }
+
+  .download-badge-icon-fa {
+    font-size: 24px;
+  }
+
+  .download-badge-text small {
+    font-size: 10px;
+  }
+
+  .download-badge-text strong {
+    font-size: 15px;
+  }
+
+  .footer {
+    padding: 48px 16px 24px;
+  }
+
+  .footer-grid {
+    gap: 28px;
+    padding-bottom: 28px;
+  }
+
+  .footer-brand p {
+    font-size: 13px;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    padding: 4px 0;
+  }
+
+  .footer-newsletter p {
+    font-size: 13px;
+  }
+
+  .footer-newsletter-form input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .footer-newsletter-form button {
+    padding: 12px 16px;
+  }
+
+  .footer-contact-item {
+    font-size: 12px;
+  }
+
+  .footer-bottom {
+    font-size: 12px;
+    margin-top: 16px;
+  }
+
+  .section-label {
+    font-size: 12px;
+    letter-spacing: 2.5px;
   }
 }
