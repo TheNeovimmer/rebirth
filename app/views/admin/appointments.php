@@ -64,7 +64,11 @@
         </div>
         <div class="form-group">
           <label class="form-label">Date & Time</label>
-          <input class="form-input" name="date_time" type="datetime-local" required>
+          <input class="form-input" name="date_time" id="apptDateTime" type="datetime-local" required>
+          <div id="availabilitySlots" style="margin-top:8px;display:none;">
+            <label class="form-label">Available Slots</label>
+            <div id="slotsList" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;"></div>
+          </div>
         </div>
         <button type="submit" class="btn btn-primary btn-block">Create Appointment</button>
       </div>
@@ -126,5 +130,48 @@
     document.getElementById('editApptStatus').value = status;
     if (therapistId) document.getElementById('editApptTherapist').value = therapistId;
     document.getElementById('editApptModal').style.display = 'flex';
+  }
+
+  // Availability-aware scheduling
+  const therapistSelect = document.querySelector('[name="therapist_id"]');
+  const dateTimeInput = document.getElementById('apptDateTime');
+  const slotsContainer = document.getElementById('availabilitySlots');
+  const slotsList = document.getElementById('slotsList');
+
+  if (therapistSelect && dateTimeInput) {
+    async function fetchSlots() {
+      const therapistId = therapistSelect.value;
+      const date = dateTimeInput.value ? dateTimeInput.value.split('T')[0] : '';
+      if (!therapistId || !date) { slotsContainer.style.display = 'none'; return; }
+      try {
+        const resp = await fetch(`/admin/appointments/availability?therapist_id=${therapistId}&date=${date}`);
+        const slots = await resp.json();
+        slotsContainer.style.display = 'block';
+        slotsList.innerHTML = '';
+        let hasAvailable = false;
+        slots.forEach(s => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'btn ' + (s.available ? 'btn-outline' : 'btn-outline');
+          btn.textContent = s.time;
+          btn.style.cssText = 'padding:4px 12px;font-size:13px;' + (s.available ? '' : 'opacity:0.4;cursor:not-allowed;');
+          btn.disabled = !s.available;
+          if (s.available) {
+            btn.onclick = () => {
+              dateTimeInput.value = date + 'T' + s.time;
+              document.querySelectorAll('#slotsList .btn').forEach(b => b.style.borderColor = '');
+              btn.style.borderColor = 'var(--color-primary)';
+            };
+            hasAvailable = true;
+          }
+          slotsList.appendChild(btn);
+        });
+        if (!hasAvailable) {
+          slotsList.innerHTML = '<span style="color:var(--color-danger);font-size:13px;">No available slots on this date</span>';
+        }
+      } catch(e) { slotsContainer.style.display = 'none'; }
+    }
+    therapistSelect.addEventListener('change', fetchSlots);
+    dateTimeInput.addEventListener('change', fetchSlots);
   }
 </script>

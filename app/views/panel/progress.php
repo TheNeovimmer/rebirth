@@ -65,3 +65,32 @@
     <?php endforeach; ?>
   </div>
 </div>
+
+<?php if (!empty($recoveryStages)): ?>
+<div class="card">
+  <h2>Recovery Program</h2>
+  <p style="color:var(--color-text-muted);font-size:14px;margin-bottom:16px;">Tracked by your therapist</p>
+  <div class="milestones">
+    <?php foreach ($recoveryStages as $stage): ?>
+    <div class="milestone <?= $stage['status'] === 'completed' ? 'done' : '' ?>">
+      <div class="milestone-icon">
+        <?php if ($stage['status'] === 'completed'): ?>
+        <i class="fa-solid fa-check-circle" style="color:var(--color-success);"></i>
+        <?php elseif ($stage['status'] === 'in_progress'): ?>
+        <i class="fa-solid fa-spinner" style="color:var(--color-accent);"></i>
+        <?php else: ?>
+        <i class="fa-solid fa-circle" style="color:var(--color-border);"></i>
+        <?php endif; ?>
+      </div>
+      <div class="milestone-info">
+        <strong><?= htmlspecialchars($stage['stage_name']) ?></strong>
+        <span><?= ucfirst(str_replace('_', ' ', $stage['status'])) ?></span>
+      </div>
+      <?php if ($stage['completed_at']): ?>
+      <span style="font-size:12px;color:var(--color-text-muted);"><?= date('M j', strtotime($stage['completed_at'])) ?></span>
+      <?php endif; ?>
+    </div>
+    <?php endforeach; ?>
+  </div>
+</div>
+<?php endif; ?>

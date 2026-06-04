@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body data-user-id="<?= $_SESSION['user_id'] ?? 0 ?>">
   <div class="app-layout">
 
     <aside class="app-sidebar">
@@ -24,10 +24,17 @@
         <div class="app-sidebar-section">Overview</div>
         <a href="/panel/dashboard" class="app-sidebar-link <?= $page === 'Dashboard' ? 'active' : '' ?>"><i class="fa-solid fa-house"></i>Dashboard</a>
         <a href="/therapist/patients" class="app-sidebar-link <?= $page === 'My Patients' ? 'active' : '' ?>"><i class="fa-solid fa-heart-pulse"></i>My Patients</a>
-        <a href="/panel/appointments" class="app-sidebar-link <?= $page === 'Appointments' ? 'active' : '' ?>"><i class="fa-regular fa-calendar"></i>Appointments</a>
+        <div class="app-sidebar-section">Communication</div>
+        <a href="/therapist/messages" class="app-sidebar-link <?= $page === 'Messages' ? 'active' : '' ?>"><i class="fa-regular fa-comment-dots"></i>Messages</a>
+        <a href="/therapist/sos" class="app-sidebar-link <?= $page === 'SOS Alerts' ? 'active' : '' ?>">
+          <i class="fa-solid fa-triangle-exclamation" style="color:var(--color-danger);"></i>SOS Alerts
+          <span id="sosBadge" style="display:none;background:var(--color-danger);color:white;font-size:11px;padding:1px 6px;border-radius:10px;margin-left:auto;"></span>
+        </a>
+        <a href="/therapist/resources" class="app-sidebar-link <?= $page === 'Resources' ? 'active' : '' ?>"><i class="fa-solid fa-folder-open"></i>Resources</a>
+        <a href="/panel/appointments" class="app-sidebar-link <?= $page === 'Appointments' ? 'active' : '' ?>"><i class="fa-regular fa-calendar"></i>Schedule</a>
         <a href="/panel/community" class="app-sidebar-link <?= $page === 'Community' ? 'active' : '' ?>"><i class="fa-regular fa-comments"></i>Community</a>
-        <a href="/panel/resources" class="app-sidebar-link <?= $page === 'Resources' ? 'active' : '' ?>"><i class="fa-regular fa-file-lines"></i>Resources</a>
-        <div class="app-sidebar-section">Account</div>
+        <div class="app-sidebar-section">Settings</div>
+        <a href="/therapist/availability" class="app-sidebar-link <?= $page === 'Availability' ? 'active' : '' ?>"><i class="fa-solid fa-clock"></i>Availability</a>
         <a href="/panel/settings" class="app-sidebar-link <?= $page === 'Settings' ? 'active' : '' ?>"><i class="fa-solid fa-gear"></i>Settings</a>
         <a href="/logout" class="app-sidebar-link" style="color:var(--color-danger);"><i class="fa-solid fa-right-from-bracket"></i>Sign Out</a>
 
@@ -39,6 +46,8 @@
         <a href="/panel/journal" class="app-sidebar-link <?= $page === 'Journal' ? 'active' : '' ?>"><i class="fa-solid fa-book"></i>Journal</a>
         <a href="/panel/appointments" class="app-sidebar-link <?= $page === 'Appointments' ? 'active' : '' ?>"><i class="fa-regular fa-calendar"></i>Appointments</a>
         <a href="/panel/community" class="app-sidebar-link <?= $page === 'Community' ? 'active' : '' ?>"><i class="fa-regular fa-comments"></i>Community</a>
+        <a href="/panel/messages" class="app-sidebar-link <?= $page === 'Messages' ? 'active' : '' ?>"><i class="fa-regular fa-comment-dots"></i>Messages</a>
+        <a href="/panel/sos" class="app-sidebar-link <?= $page === 'SOS' ? 'active' : '' ?>"><i class="fa-solid fa-triangle-exclamation" style="color:var(--color-danger);"></i>SOS</a>
         <a href="/panel/resources" class="app-sidebar-link <?= $page === 'Resources' ? 'active' : '' ?>"><i class="fa-regular fa-file-lines"></i>Resources</a>
         <div class="app-sidebar-section">Account</div>
         <a href="/panel/progress" class="app-sidebar-link <?= $page === 'Progress' ? 'active' : '' ?>"><i class="fa-solid fa-chart-line"></i>Progress</a>
@@ -86,17 +95,17 @@
     <nav class="app-tabs">
       <a href="/panel/dashboard" class="app-tab <?= $page === 'Dashboard' ? 'active' : '' ?>"><i class="fa-solid fa-house"></i><span>Home</span></a>
       <a href="/therapist/patients" class="app-tab <?= $page === 'My Patients' ? 'active' : '' ?>"><i class="fa-solid fa-heart-pulse"></i><span>Patients</span></a>
+      <a href="/therapist/messages" class="app-tab <?= $page === 'Messages' ? 'active' : '' ?>"><i class="fa-regular fa-comment-dots"></i><span>Messages</span></a>
       <a href="/panel/community" class="app-tab <?= $page === 'Community' ? 'active' : '' ?>"><i class="fa-regular fa-comments"></i><span>Community</span></a>
       <a href="/panel/appointments" class="app-tab <?= $page === 'Appointments' ? 'active' : '' ?>"><i class="fa-regular fa-calendar"></i><span>Schedule</span></a>
-      <a href="/panel/settings" class="app-tab <?= $page === 'Settings' ? 'active' : '' ?>"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
     </nav>
     <?php else: ?>
     <nav class="app-tabs">
       <a href="/panel/dashboard" class="app-tab <?= $page === 'Dashboard' ? 'active' : '' ?>"><i class="fa-solid fa-house"></i><span>Home</span></a>
       <a href="/panel/checkin" class="app-tab <?= $page === 'Daily Check-in' ? 'active' : '' ?>"><i class="fa-regular fa-face-smile"></i><span>Check-in</span></a>
+      <a href="/panel/messages" class="app-tab <?= $page === 'Messages' ? 'active' : '' ?>"><i class="fa-regular fa-comment-dots"></i><span>Messages</span></a>
       <a href="/panel/community" class="app-tab <?= $page === 'Community' ? 'active' : '' ?>"><i class="fa-regular fa-comments"></i><span>Community</span></a>
       <a href="/panel/progress" class="app-tab <?= $page === 'Progress' ? 'active' : '' ?>"><i class="fa-solid fa-chart-line"></i><span>Progress</span></a>
-      <a href="/panel/journal" class="app-tab <?= $page === 'Journal' ? 'active' : '' ?>"><i class="fa-solid fa-book"></i><span>Journal</span></a>
     </nav>
     <?php endif; ?>
 

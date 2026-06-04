@@ -143,6 +143,261 @@ class PanelController extends Controller {
     $this->redirect('/panel/journal?success=Entry deleted');
   }
 
+  // ─── MESSAGING (Patient) ───
+
+  public function messages(): void {
+    $user = $this->user();
+    if ($user['role'] === 'therapist') { http_response_code(403); exit; }
+    $therapistId = $this->getPatientTherapistId($user['id']);
+    $conversation = null;
+    $messages = [];
+    if ($therapistId) {
+      $convId = Conversation::ensure($user['id'], $therapistId);
+      $conversation = Conversation::forPatient($user['id']);
+      $messages = ConversationMessage::forConversation($convId);
+    }
+    $this->renderPanel('panel/messages', 'Messages', [
+      'conversation' => $conversation,
+      'messages' => $messages,
+      'therapistId' => $therapistId,
+    ]);
+  }
+
+  public function sendMessage(): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $convId = (int)($_POST['conversation_id'] ?? 0);
+    $content = trim($_POST['content'] ?? '');
+    if ($convId && $content) {
+      $conv = Database::fetch("SELECT * FROM conversations WHERE id = ? AND (patient_id = ? OR therapist_id = ?)", [$convId, $user['id'], $user['id']]);
+      if ($conv) {
+        ConversationMessage::send($convId, $user['id'], $content);
+      }
+    }
+    $this->redirect($_SERVER['HTTP_REFERER'] ?? '/panel/messages');
+  }
+
+  public function pollMessages(): void {
+    $user = $this->user();
+    $convId = (int)($_GET['conversation_id'] ?? 0);
+    $afterId = (int)($_GET['after'] ?? 0);
+    if (!$convId) { echo json_encode([]); exit; }
+    $conv = Database::fetch("SELECT * FROM conversations WHERE id = ? AND (patient_id = ? OR therapist_id = ?)", [$convId, $user['id'], $user['id']]);
+    if (!$conv) { echo json_encode([]); exit; }
+    Conversation::markRead($convId, $user['id']);
+    $messages = ConversationMessage::forConversation($convId, $afterId);
+    header('Content-Type: application/json');
+    echo json_encode($messages);
+    exit;
+  }
+
+  // ─── SOS (Patient) ───
+
+  public function sos(): void {
+    $user = $this->user();
+    if ($user['role'] !== 'member') { http_response_code(403); exit; }
+    $therapistId = $this->getPatientTherapistId($user['id']);
+    $alerts = $therapistId ? SOSAlert::forPatient($user['id'], $therapistId) : [];
+    $therapistName = $therapistId ? (Database::fetch("SELECT name FROM users WHERE id = ?", [$therapistId])['name'] ?? 'your therapist') : null;
+    $this->renderPanel('panel/sos', 'SOS', [
+      'alerts' => $alerts,
+      'therapistName' => $therapistName,
+      'hasTherapist' => $therapistId !== null,
+    ]);
+  }
+
+  public function sendSos(): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $therapistId = $this->getPatientTherapistId($user['id']);
+    if ($therapistId) {
+      SOSAlert::create($user['id'], $therapistId);
+    }
+    $this->redirect('/panel/sos?success=SOS alert sent to your therapist');
+  }
+
+  // ─── THERAPIST RESOURCES ───
+
+  public function therapistResources(): void {
+    $this->requireRole('therapist');
+    $user = $this->user();
+    $resources = TherapistResource::forTherapist($user['id']);
+    $patients = User::patientsForTherapist($user['id']);
+    $this->renderPanel('panel/therapist-resources', 'Resources', [
+      'resources' => $resources,
+      'patients' => $patients,
+    ]);
+  }
+
+  public function createTherapistResource(): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $title = trim($_POST['title'] ?? '');
+    $type = $_POST['type'] ?? '';
+    $patientId = !empty($_POST['patient_id']) ? (int)$_POST['patient_id'] : null;
+    $description = trim($_POST['description'] ?? '');
+    if ($title && $type && !empty($_FILES['file']['name']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+      $allowed = [
+        'video' => ['video/mp4', 'video/webm', 'video/ogg'],
+        'pdf' => ['application/pdf'],
+        'article' => ['text/plain', 'text/markdown'],
+        'image' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+      ];
+      $finfo = finfo_open(FILEINFO_MIME_TYPE);
+      $mime = finfo_file($finfo, $_FILES['file']['tmp_name']);
+      finfo_close($finfo);
+      if (isset($allowed[$type]) && in_array($mime, $allowed[$type], true)) {
+        $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+        $filename = 'res_' . $user['id'] . '_' . time() . '.' . $ext;
+        $dir = BASE_PATH . '/uploads/resources/' . $user['id'];
+        if (!is_dir($dir)) mkdir($dir, 0755, true);
+        if (move_uploaded_file($_FILES['file']['tmp_name'], $dir . '/' . $filename)) {
+          TherapistResource::create([
+            'therapist_id' => $user['id'],
+            'patient_id' => $patientId,
+            'title' => $title,
+            'type' => $type,
+            'file_path' => 'uploads/resources/' . $user['id'] . '/' . $filename,
+            'description' => $description,
+          ]);
+        }
+      }
+    }
+    $this->redirect('/therapist/resources');
+  }
+
+  public function deleteTherapistResource(): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $id = (int)($_POST['id'] ?? 0);
+    TherapistResource::delete($id, $user['id']);
+    $this->redirect('/therapist/resources?success=Resource deleted');
+  }
+
+  // ─── THERAPIST MESSAGING ───
+
+  public function therapistMessages(): void {
+    $this->requireRole('therapist');
+    $user = $this->user();
+    $conversations = Conversation::forTherapist($user['id']);
+    $this->renderPanel('panel/therapist-messages', 'Messages', [
+      'conversations' => $conversations,
+    ]);
+  }
+
+  public function therapistConversation(int $id): void {
+    $this->requireRole('therapist');
+    $user = $this->user();
+    $conv = Database::fetch("SELECT * FROM conversations WHERE id = ? AND therapist_id = ?", [$id, $user['id']]);
+    if (!$conv) { http_response_code(404); exit; }
+    Conversation::markRead($id, $user['id']);
+    $patient = Database::fetch("SELECT id, name, initials, avatar FROM users WHERE id = ?", [$conv['patient_id']]);
+    $messages = ConversationMessage::forConversation($id);
+    $this->renderPanel('panel/therapist-conversation', 'Messages', [
+      'conv' => $conv,
+      'patient' => $patient,
+      'messages' => $messages,
+    ]);
+  }
+
+  // ─── THERAPIST AVAILABILITY ───
+
+  public function therapistAvailability(): void {
+    $this->requireRole('therapist');
+    $user = $this->user();
+    $slots = TherapistAvailability::forTherapist($user['id']);
+    $this->renderPanel('panel/therapist-availability', 'Availability', [
+      'slots' => $slots,
+    ]);
+  }
+
+  public function saveTherapistAvailability(): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $days = $_POST['days'] ?? [];
+    $starts = $_POST['starts'] ?? [];
+    $ends = $_POST['ends'] ?? [];
+    $slots = [];
+    foreach ($days as $i => $day) {
+      if (isset($starts[$i]) && isset($ends[$i])) {
+        $slots[] = ['day' => $day, 'start' => $starts[$i], 'end' => $ends[$i]];
+      }
+    }
+    TherapistAvailability::save($user['id'], $slots);
+    $this->redirect('/therapist/availability?success=Availability saved');
+  }
+
+  // ─── SOS MANAGEMENT ───
+
+  public function therapistSos(): void {
+    $this->requireRole('therapist');
+    $user = $this->user();
+    $alerts = SOSAlert::activeForTherapist($user['id']);
+    $this->renderPanel('panel/therapist-sos', 'SOS Alerts', ['alerts' => $alerts]);
+  }
+
+  public function acknowledgeSos(): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $id = (int)($_POST['id'] ?? 0);
+    SOSAlert::acknowledge($id, $user['id']);
+    $this->redirect('/therapist/sos');
+  }
+
+  public function resolveSos(): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $id = (int)($_POST['id'] ?? 0);
+    $notes = trim($_POST['notes'] ?? '');
+    SOSAlert::resolve($id, $user['id'], $notes);
+    $this->redirect('/therapist/sos');
+  }
+
+  // ─── RECOVERY PROGRESS ───
+
+  public function patientProgress(int $id): void {
+    $this->requireRole('therapist');
+    $user = $this->user();
+    $isAssigned = Database::exists("SELECT id FROM therapist_patients WHERE therapist_id = ? AND patient_id = ?", [$user['id'], $id]);
+    if (!$isAssigned) { http_response_code(403); exit; }
+    $patient = User::find($id);
+    $stages = RecoveryProgress::forPatientPair($id, $user['id']);
+    $this->renderPanel('panel/patient-progress', 'Patient Progress', [
+      'patient' => $patient, 'stages' => $stages,
+    ]);
+  }
+
+  public function updatePatientProgress(int $id): void {
+    $this->verifyCsrf();
+    $user = $this->user();
+    $stageId = (int)($_POST['stage_id'] ?? 0);
+    $status = $_POST['status'] ?? '';
+    $notes = trim($_POST['notes'] ?? '');
+    if ($stageId && $status) {
+      RecoveryProgress::updateStage($stageId, $status, $notes);
+    }
+    $this->redirect('/therapist/patient/' . $id . '/progress');
+  }
+
+  // ─── SOS COUNT / AVAILABILITY CHECK (JSON endpoints) ───
+
+  public function sosCount(): void {
+    $this->requireRole('therapist');
+    $user = $this->user();
+    $count = SOSAlert::activeCount($user['id']);
+    header('Content-Type: application/json');
+    echo json_encode(['count' => $count]);
+    exit;
+  }
+
+  public function checkAvailability(): void {
+    $therapistId = (int)($_GET['therapist_id'] ?? 0);
+    $available = $therapistId ? TherapistAvailability::isAvailableNow($therapistId) : false;
+    header('Content-Type: application/json');
+    echo json_encode(['available' => $available]);
+    exit;
+  }
+
   public function appointments(): void {
     $user = $this->user();
     if ($user['role'] === 'therapist') {
@@ -236,19 +491,23 @@ class PanelController extends Controller {
     $milestones = Milestone::forUser($user['id']);
     $moodTrend = Milestone::moodTrend($user['id'], 7);
     $weeklyProgress = Milestone::weeklyProgress($user['id']);
+    $recoveryStages = RecoveryProgress::forPatientView($user['id']);
     $this->renderPanel('panel/progress', 'Progress', [
-      'streak' => $streak,
-      'totalCheckins' => $totalCheckins,
-      'avgMood' => $avgMood,
-      'milestones' => $milestones,
-      'moodTrend' => $moodTrend,
-      'weeklyProgress' => $weeklyProgress,
+      'streak' => $streak, 'totalCheckins' => $totalCheckins, 'avgMood' => $avgMood,
+      'milestones' => $milestones, 'moodTrend' => $moodTrend, 'weeklyProgress' => $weeklyProgress,
+      'recoveryStages' => $recoveryStages,
     ]);
   }
 
   public function resources(): void {
     $resources = Resource::all();
-    $this->renderPanel('panel/resources', 'Resources', ['resources' => $resources]);
+    $extra = ['resources' => $resources];
+    $user = $this->user();
+    if ($user['role'] === 'member') {
+      $therapistId = $this->getPatientTherapistId($user['id']);
+      $extra['therapistResources'] = $therapistId ? TherapistResource::forPatient($user['id'], $therapistId) : [];
+    }
+    $this->renderPanel('panel/resources', 'Resources', $extra);
   }
 
   public function settings(): void {
@@ -329,5 +588,12 @@ class PanelController extends Controller {
       'journal' => $journal,
       'milestones' => $milestones,
     ]);
+  }
+
+  // ─── HELPER ───
+
+  private function getPatientTherapistId(int $patientId): ?int {
+    $tp = Database::fetch("SELECT therapist_id FROM therapist_patients WHERE patient_id = ? LIMIT 1", [$patientId]);
+    return $tp ? (int)$tp['therapist_id'] : null;
   }
 }

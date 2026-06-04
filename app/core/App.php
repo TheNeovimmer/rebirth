@@ -44,6 +44,36 @@ class App {
     $this->router->get('/therapist/patients', 'PanelController@myPatients');
     $this->router->get('/therapist/patient/{id}', 'PanelController@patientDetail');
 
+    // Messaging
+    $this->router->get('/panel/messages', 'PanelController@messages');
+    $this->router->post('/messages/send', 'PanelController@sendMessage');
+    $this->router->get('/messages/poll', 'PanelController@pollMessages');
+
+    // SOS
+    $this->router->get('/panel/sos', 'PanelController@sos');
+    $this->router->post('/panel/sos/send', 'PanelController@sendSos');
+
+    // Therapist features
+    $this->router->get('/therapist/resources', 'PanelController@therapistResources');
+    $this->router->post('/therapist/resources/create', 'PanelController@createTherapistResource');
+    $this->router->post('/therapist/resources/delete', 'PanelController@deleteTherapistResource');
+    $this->router->get('/therapist/messages', 'PanelController@therapistMessages');
+    $this->router->get('/therapist/messages/{id}', 'PanelController@therapistConversation');
+    $this->router->get('/therapist/availability', 'PanelController@therapistAvailability');
+    $this->router->post('/therapist/availability/save', 'PanelController@saveTherapistAvailability');
+    $this->router->get('/therapist/sos', 'PanelController@therapistSos');
+    $this->router->post('/therapist/sos/acknowledge', 'PanelController@acknowledgeSos');
+    $this->router->post('/therapist/sos/resolve', 'PanelController@resolveSos');
+    $this->router->get('/therapist/patient/{id}/progress', 'PanelController@patientProgress');
+    $this->router->post('/therapist/patient/{id}/progress/update', 'PanelController@updatePatientProgress');
+
+    // SOS count + availability check (JSON endpoints)
+    $this->router->get('/therapist/sos/count', 'PanelController@sosCount');
+    $this->router->get('/therapist/availability/check', 'PanelController@checkAvailability');
+
+    // Admin availability endpoint
+    $this->router->get('/admin/appointments/availability', 'AdminController@getAvailability');
+
     // Admin - GET
     $this->router->get('/admin/dashboard', 'AdminController@dashboard');
     $this->router->get('/admin/users', 'AdminController@users');

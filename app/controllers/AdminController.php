@@ -212,4 +212,18 @@ class AdminController extends Controller {
       'weekCheckins' => $weekCheckins,
     ]);
   }
+
+  public function getAvailability(): void {
+    $therapistId = (int)($_GET['therapist_id'] ?? 0);
+    $date = $_GET['date'] ?? '';
+    if (!$therapistId || !$date) {
+      header('Content-Type: application/json');
+      echo json_encode([]);
+      exit;
+    }
+    $slots = TherapistAvailability::availableSlotsForDate($therapistId, $date);
+    header('Content-Type: application/json');
+    echo json_encode($slots);
+    exit;
+  }
 }
