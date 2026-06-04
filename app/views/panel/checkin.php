@@ -29,7 +29,7 @@
   </div>
 </div>
 <?php else: ?>
-<form action="/checkin" method="POST">
+<form action="/panel/checkin" method="POST">
   <input type="hidden" name="_token" value="<?= $_token ?>">
   <input type="hidden" name="mood" id="selectedMood" value="">
   <input type="hidden" name="craving_level" id="cravingInput" value="0">

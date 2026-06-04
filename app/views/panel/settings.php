@@ -5,7 +5,7 @@
 <div class="alert" style="background:rgba(209,69,59,0.08);color:var(--color-danger);padding:12px 20px;border-radius:var(--radius-sm);margin-bottom:16px;"><?= htmlspecialchars($_GET['error']) ?></div>
 <?php endif; ?>
 
-<form action="/settings/profile" method="POST" enctype="multipart/form-data">
+<form action="/panel/settings/profile" method="POST" enctype="multipart/form-data">
   <input type="hidden" name="_token" value="<?= $_token ?>">
   <div class="card">
     <h2>Profile</h2>

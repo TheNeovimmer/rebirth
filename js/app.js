@@ -5,7 +5,7 @@ document.querySelectorAll('#messageContainer').forEach(container => {
   setInterval(async () => {
     const lastId = container.dataset.lastId || '0';
     try {
-      const resp = await fetch(`/messages/poll?conversation_id=${convId}&after=${lastId}`);
+      const resp = await fetch(`/panel/messages/poll?conversation_id=${convId}&after=${lastId}`);
       const msgs = await resp.json();
       if (msgs.length > 0) {
         const userId = document.body.dataset.userId;
@@ -151,3 +151,41 @@ if (notifBell) {
   fetchNotifCount();
   setInterval(fetchNotifCount, 10000);
 }
+
+// ─── Toast Notification System ───
+
+function showToast(message, type) {
+  type = type || 'success';
+  const container = document.getElementById('toastContainer') || (function() {
+    const c = document.createElement('div');
+    c.className = 'toast-container';
+    c.id = 'toastContainer';
+    document.body.appendChild(c);
+    return c;
+  })();
+
+  const icons = { success: 'fa-regular fa-circle-check', error: 'fa-regular fa-circle-xmark', warning: 'fa-regular fa-triangle-exclamation' };
+  const icon = icons[type] || icons.success;
+
+  const toast = document.createElement('div');
+  toast.className = 'toast toast-' + type;
+  toast.innerHTML = '<i class="' + icon + ' toast-icon"></i><span>' + escapeHtml(message) + '</span>';
+  container.appendChild(toast);
+
+  setTimeout(function() {
+    toast.classList.add('removing');
+    setTimeout(function() { toast.remove(); }, 300);
+  }, 4000);
+}
+
+// Show URL-based toasts from flash messages
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('success')) {
+    showToast(params.get('success'), 'success');
+    history.replaceState({}, '', window.location.pathname);
+  } else if (params.has('error')) {
+    showToast(params.get('error'), 'error');
+    history.replaceState({}, '', window.location.pathname);
+  }
+})();

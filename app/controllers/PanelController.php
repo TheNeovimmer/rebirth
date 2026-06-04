@@ -114,7 +114,7 @@ class PanelController extends Controller {
     ]);
     $streak = Milestone::currentStreak($user['id']);
     Milestone::updateProgress($user['id'], $streak);
-    $this->redirect('/panel/dashboard?success=Check-in saved');
+    $this->redirect('/panel/checkin?success=Check-in saved');
   }
 
   public function journal(): void {

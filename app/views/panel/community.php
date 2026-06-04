@@ -22,7 +22,7 @@
         <?php if ($isMember): ?>
         <span class="badge badge-green">Joined</span>
         <?php else: ?>
-        <form action="/settings/join-group" method="POST" style="display:inline;">
+        <form action="/panel/settings/join-group" method="POST" style="display:inline;">
           <input type="hidden" name="_token" value="<?= $_token ?>">
           <input type="hidden" name="group_id" value="<?= $group['id'] ?>">
           <button type="submit" class="btn btn-primary" style="padding:6px 16px;font-size:13px;">Join</button>
@@ -55,7 +55,7 @@
       </div>
       <p><?= htmlspecialchars($msg['text']) ?></p>
       <div class="chat-message-actions">
-        <form action="/messages/like" method="POST" style="display:inline;">
+        <form action="/panel/messages/like" method="POST" style="display:inline;">
           <input type="hidden" name="_token" value="<?= $_token ?>">
           <input type="hidden" name="message_id" value="<?= $msg['id'] ?>">
           <button type="submit"><i class="fa-regular fa-heart"></i> <?= $msg['likes'] ?></button>
@@ -66,7 +66,7 @@
     <?php endforeach; ?>
     <?php endif; ?>
   </div>
-  <form action="/messages/create" method="POST" class="chat-input">
+  <form action="/panel/messages/create" method="POST" class="chat-input">
     <input type="hidden" name="_token" value="<?= $_token ?>">
     <input type="text" name="text" class="form-input" placeholder="Share your thoughts..." style="flex:1;" required>
     <button type="submit" class="btn btn-primary" style="padding:10px 16px;"><i class="fa-regular fa-paper-plane"></i></button>

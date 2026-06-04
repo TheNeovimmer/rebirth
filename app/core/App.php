@@ -29,16 +29,17 @@ class App {
     $this->router->get('/panel/resources', 'PanelController@resources');
     $this->router->get('/panel/settings', 'PanelController@settings');
 
-    // Panel - POST (CRUD)
-    $this->router->post('/checkin', 'PanelController@saveCheckin');
-    $this->router->post('/journal/create', 'PanelController@createJournal');
-    $this->router->post('/journal/delete', 'PanelController@deleteJournal');
-    $this->router->post('/appointments/create', 'PanelController@createAppointment');
-    $this->router->post('/appointments/cancel', 'PanelController@cancelAppointment');
-    $this->router->post('/messages/create', 'PanelController@createMessage');
-    $this->router->post('/messages/like', 'PanelController@likeMessage');
-    $this->router->post('/settings/profile', 'PanelController@updateProfile');
-    $this->router->post('/settings/join-group', 'PanelController@joinGroup');
+    // Panel - POST (CRUD) — all use /panel/ prefix
+    $this->router->post('/panel/checkin', 'PanelController@saveCheckin');
+    $this->router->post('/panel/journal/create', 'PanelController@createJournal');
+    $this->router->post('/panel/journal/delete', 'PanelController@deleteJournal');
+    $this->router->post('/panel/appointments/create', 'PanelController@createAppointment');
+    $this->router->post('/panel/appointments/cancel', 'PanelController@cancelAppointment');
+    $this->router->post('/panel/messages/create', 'PanelController@createMessage');
+    $this->router->post('/panel/messages/like', 'PanelController@likeMessage');
+    $this->router->post('/panel/messages/send', 'PanelController@sendMessage');
+    $this->router->post('/panel/settings/profile', 'PanelController@updateProfile');
+    $this->router->post('/panel/settings/join-group', 'PanelController@joinGroup');
 
     // Therapist
     $this->router->get('/therapist/patients', 'PanelController@myPatients');
@@ -46,8 +47,7 @@ class App {
 
     // Messaging
     $this->router->get('/panel/messages', 'PanelController@messages');
-    $this->router->post('/messages/send', 'PanelController@sendMessage');
-    $this->router->get('/messages/poll', 'PanelController@pollMessages');
+    $this->router->get('/panel/messages/poll', 'PanelController@pollMessages');
 
     // SOS
     $this->router->get('/panel/sos', 'PanelController@sos');

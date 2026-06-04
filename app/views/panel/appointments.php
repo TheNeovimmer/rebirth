@@ -76,7 +76,7 @@
 
 <div class="modal-overlay" id="bookModal" style="display:none;">
   <div class="modal">
-    <form action="/appointments/create" method="POST">
+    <form action="/panel/appointments/create" method="POST">
       <input type="hidden" name="_token" value="<?= $_token ?>">
       <div class="modal-header">
         <h3>Book Appointment</h3>

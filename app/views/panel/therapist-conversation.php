@@ -17,7 +17,7 @@
     </div>
     <?php endforeach; ?>
   </div>
-  <form action="/messages/send" method="POST" style="display:flex;gap:8px;padding-top:12px;border-top:1px solid var(--color-border);">
+  <form action="/panel/messages/send" method="POST" style="display:flex;gap:8px;padding-top:12px;border-top:1px solid var(--color-border);">
     <input type="hidden" name="_token" value="<?= $_token ?>">
     <input type="hidden" name="conversation_id" value="<?= $conv['id'] ?>">
     <input type="text" name="content" class="form-input" placeholder="Type a message..." required style="flex:1;">

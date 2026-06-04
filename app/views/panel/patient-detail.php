@@ -14,6 +14,7 @@
   </div>
   <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
     <a href="/therapist/patient/<?= $patient['id'] ?>/plans" class="btn btn-outline btn-sm"><i class="fa-solid fa-clipboard-list"></i> Plans</a>
+    <a href="/therapist/patient/<?= $patient['id'] ?>/progress" class="btn btn-outline btn-sm"><i class="fa-solid fa-chart-line"></i> Progress</a>
     <a href="/therapist/patient/<?= $patient['id'] ?>/timeline" class="btn btn-outline btn-sm"><i class="fa-solid fa-timeline"></i> Timeline</a>
   </div>
 </div>
@@ -65,6 +66,7 @@
     </div>
     <?php endforeach; ?>
   </div>
+  <?php endif; ?>
 </div>
 
 <div class="card">
@@ -136,9 +138,4 @@
   </div>
   <?php endif; ?>
 </div>
-      <span><?= $ms['progress'] ?>%</span>
-    </div>
-    <?php endforeach; ?>
-  </div>
-  <?php endif; ?>
-</div>
+

@@ -23,7 +23,7 @@
     </div>
     <p><?= htmlspecialchars($entry['content']) ?></p>
     <div style="margin-top:12px;">
-      <form action="/journal/delete" method="POST" style="display:inline;" onsubmit="return confirm('Delete this entry?')">
+      <form action="/panel/journal/delete" method="POST" style="display:inline;" onsubmit="return confirm('Delete this entry?')">
         <input type="hidden" name="_token" value="<?= $_token ?>">
         <input type="hidden" name="id" value="<?= $entry['id'] ?>">
         <button type="submit" class="btn btn-outline" style="padding:4px 12px;font-size:12px;color:var(--color-danger);"><i class="fa-regular fa-trash-can"></i> Delete</button>
@@ -36,7 +36,7 @@
 
 <div class="modal-overlay" id="newEntryModal" style="display:none;">
   <div class="modal">
-    <form action="/journal/create" method="POST">
+    <form action="/panel/journal/create" method="POST">
       <input type="hidden" name="_token" value="<?= $_token ?>">
       <div class="modal-header">
         <h3>New Journal Entry</h3>
