@@ -124,6 +124,30 @@ open https://nada.ddev.site
 
 Therapist-patient assignments: sarah.mitchell@rebirth.app (id 3) is assigned to jamie (id 1) and mwebb (id 4).
 
+
+## Laragon (Windows)
+### Prerequisites
+- [Laragon](https://laragon.org/download/) installed (PHP 8.4 + MariaDB)
+- Laragon running (Start All)
+### Setup
+1. **Clone the project** into `C:\laragon\www\rebirth`
+2. **Update database config** in `config.php`:
+   ```php
+   define('DB_HOST', 'localhost');
+   define('DB_NAME', 'rebirth');
+   define('DB_USER', 'root');
+   define('DB_PASS', '');
+3. Create the database — Laragon Menu → Database → Open phpMyAdmin (http://localhost/phpmyadmin), then:
+- Click New in the left sidebar
+- Database name: rebirth, Charset: utf8mb4_general_ci, click Create
+4. Import schema + seed data — in phpMyAdmin:
+- Select the rebirth database from the left sidebar
+- Click the Import tab
+- Click Choose File and select app/database/database.sql
+- Scroll down and click Import
+5. Visit http://rebirth.test in your browser
+Laragon auto-creates a Virtual Host for every folder in www/, so rebirth → http://rebirth.test. The existing .htaccess with mod_rewrite works out of the box.
+
 ## Routes (48 total)
 
 ### Auth
